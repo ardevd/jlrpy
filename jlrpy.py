@@ -38,9 +38,6 @@ class Connection(object):
                 "password": password}
             self.expiration = 0  # force credential refresh
 
-        # self.vehicles = [Vehicle(v, self) for v in self.get('
-        # self.vehicles = [Vehicle(v, self) for v in self.get('users/{{userid}}/vehicles?primaryOnly=true' % self.user_id
-        #self.post("hello"
         self.connect()
 
     def get(self, command):
