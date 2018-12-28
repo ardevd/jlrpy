@@ -2,9 +2,7 @@
 https://github.com/ardevd/jlrpy
 """
 
-from urllib.parse import urlencode
 from urllib.request import Request, build_opener
-from urllib.request import ProxyHandler, HTTPBasicAuthHandler, HTTPHandler
 
 import json
 import datetime
