@@ -39,19 +39,31 @@ class Connection(object):
             self.expiration = 0  # force credential refresh
 
         # self.vehicles = [Vehicle(v, self) for v in self.get('
-        self.post("hello")
+        # self.vehicles = [Vehicle(v, self) for v in self.get('users/{{userid}}/vehicles?primaryOnly=true' % self.user_id
+        #self.post("hello"
+        self.connect()
 
-    def post(self, command):
+    def get(self, command):
+        """GET data from API"""
+        return self.post(command, None)
+
+    def post(self, command, data={}):
+        """POST data to API"""
         now = calendar.timegm(datetime.datetime.now().timetuple())
         if now > self.expiration:
-            auth = self.__authenticate(data=self.oauth)
-            self.__register_auth(auth)
-            print("[*] 1/3 authenticated")
-            self.__setheader(auth['access_token'], auth['expires_in'])
-            self.__register_device(self.head)
-            print("[*] 2/3 device id registered")
-            self.__login_user(self.head)
-            print("[*] 3/3 user logged in, user id retrieved")
+            # Auth expired, reconnect
+            self.connect()
+
+
+    def connect(self):
+        auth = self.__authenticate(data=self.oauth)
+        self.__register_auth(auth)
+        print("[*] 1/3 authenticated")
+        self.__setheader(auth['access_token'], auth['expires_in'])
+        self.__register_device(self.head)
+        print("[*] 2/3 device id registered")
+        self.__login_user(self.head)
+        print("[*] 3/3 user logged in, user id retrieved")
 
     def __register_auth(self, auth):
         self.access_token = auth['access_token']
@@ -114,4 +126,14 @@ class Connection(object):
         return userdata
 
 
+class Vehicle(dict):
+    """Vehicle class.
 
+    You can request data or send commands to vehicle. Consult the JLR API documentation for details
+    """
+
+    def __init__(self, data, connection):
+        """Initialize the vehicle class."""
+
+        super(Vehicle, self).__init__(data)
+        self.connection = connection
