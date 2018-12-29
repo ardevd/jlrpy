@@ -5,15 +5,14 @@
 Python 3 library for interacting with the JLR Remote car API
 
 ## Usage
-To get started, instantiate a Connection object and pass along the email address and password associated with your Jaguar InControl account.
+To get started, instantiate a `Connection` object and pass along the email address and password associated with your Jaguar InControl account.
 
-The JLR API requires a device ID to be registered (UUID4 formatted). If you do not specify one when instantiating the Connection object it will generate a new one for your automatically. 
+The JLR API requires a device ID to be registered (UUID4 formatted). If you do not specify one when instantiating the `Connection` object it will generate a new one for your automatically. 
 
 ```python
 import jlrpy
 
 con = jlrpy.Connection('my@email.com', 'password')
-
 c.vehicles
 ```
 
