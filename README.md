@@ -5,9 +5,9 @@
 Python 3 library for interacting with the JLR Remote car API
 
 ## Security notice
-The SSL certificates used by JLR are issued by GeoTrust in 2017. Both Apple and Google have distrusted these and others after faliure to comply with industry standards for SSL. If you are running MacOS you will currently get SSL verification errors are will be unable to use this script.
+The SSL certificates used by JLR are issued by GeoTrust in 2017. Both Apple and Google have distrusted these and others after faliure to comply with industry standards for SSL. If you are running MacOS you will currently get SSL verification errors and subsequently you will be unable to use this script without modifications.
 
-I find it disturbing that JLR fails to use distrusted SSL certificates to protect the communication between app and vehicle.
+It's unfortunate that JLR relies on distrusted SSL certificates to protect the communication between app and vehicle.
 
 ## Usage
 To get started, instantiate a `Connection` object and pass along the email address and password associated with your Jaguar InControl account.
