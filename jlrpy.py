@@ -16,7 +16,6 @@ class Connection(object):
     def __init__(self,
                  email='',
                  password='',
-                 access_token='',
                  device_id='',):
         """Init the connection object
 
@@ -29,14 +28,11 @@ class Connection(object):
         else:
             self.device_id = str(uuid.uuid4())
 
-        if access_token:
-            self.__setheader(access_token)
-        else:
-            self.oauth = {
-                "grant_type": "password",
-                "username": email,
-                "password": password}
-            self.expiration = 0  # force credential refresh
+        self.oauth = {
+            "grant_type": "password",
+            "username": email,
+            "password": password}
+        self.expiration = 0  # force credential refresh
 
         self.connect()
 
