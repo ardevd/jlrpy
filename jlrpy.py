@@ -40,6 +40,8 @@ class Connection(object):
 
         self.connect()
 
+        self.vehicles = self.get_vehicles(self.head)
+
     def get(self, command):
         """GET data from API"""
         return self.post(command, None)
@@ -51,8 +53,8 @@ class Connection(object):
             # Auth expired, reconnect
             self.connect()
 
-
     def connect(self):
+        print("[*] Connecting...")
         auth = self.__authenticate(data=self.oauth)
         self.__register_auth(auth)
         print("[*] 1/3 authenticated")
@@ -111,9 +113,10 @@ class Connection(object):
     def __login_user(self, headers={}):
         """Login the user"""
         url = "https://jlp-ifoa.wirelesscar.net/if9/jlr/users?loginName=%s" % self.email
-        headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.User-v3+json"
+        user_login_header = headers.copy()
+        user_login_header["Accept"] = "application/vnd.wirelesscar.ngtp.if9.User-v3+json"
 
-        req = Request(url, headers=headers)
+        req = Request(url, headers=user_login_header)
         opener = build_opener()
         resp = opener.open(req)
         charset = resp.info().get('charset', 'utf-8')
@@ -121,6 +124,17 @@ class Connection(object):
         userdata = json.loads(resp.read().decode(charset))
         self.user_id = userdata['userId']
         return userdata
+
+    def get_vehicles(self, headers):
+        """Get vehicles for user"""
+        url = "https://jlp-ifoa.wirelesscar.net/if9/jlr/users/%s/vehicles?primaryOnly=true" % self.user_id
+
+        req = Request(url, headers=headers)
+        opener = build_opener()
+        resp = opener.open(req)
+        charset = resp.info().get('charset', 'utf-8')
+
+        return json.loads(resp.read().decode(charset))
 
 
 class Vehicle(dict):
