@@ -8,7 +8,7 @@ import json
 import datetime
 import calendar
 import uuid
-
+import time
 
 class Connection(object):
     """Connection to the JLR Remote Car API"""
@@ -16,7 +16,7 @@ class Connection(object):
     def __init__(self,
                  email='',
                  password='',
-                 device_id='',):
+                 device_id='', ):
         """Init the connection object
 
         The email address and password associated with your Jaguar InControl account is required.
@@ -36,18 +36,24 @@ class Connection(object):
 
         self.connect()
 
-        self.vehicles = self.get_vehicles(self.head)
+        self.vehicles = []
+        try:
+            for v in self.get_vehicles(self.head):
+                self.vehicles.append(v['vin'])
+        except TypeError:
+            print("[-] No vehicles associated with this account")
 
-    def get(self, command):
+    def get(self, command, url, headers):
         """GET data from API"""
-        return self.post(command, None)
+        return self.post(command, url, headers, None)
 
-    def post(self, command, data={}):
+    def post(self, command, url, headers, data={}):
         """POST data to API"""
         now = calendar.timegm(datetime.datetime.now().timetuple())
         if now > self.expiration:
             # Auth expired, reconnect
             self.connect()
+        return self.__open("%s/%s" % (url, command), headers=headers, data=data)
 
     def connect(self):
         print("[*] Connecting...")
@@ -60,9 +66,20 @@ class Connection(object):
         self.__login_user(self.head)
         print("[*] 3/3 user logged in, user id retrieved")
 
+    def __open(self, url, headers={}, data=None):
+        req = Request(url, headers=headers)
+        if data:
+            req.data = bytes(json.dumps(data), encoding="utf8")
+
+        opener = build_opener()
+        resp = opener.open(req)
+        charset = resp.info().get('charset', 'utf-8')
+        return json.loads(resp.read().decode(charset))
+
     def __register_auth(self, auth):
         self.access_token = auth['access_token']
-        self.expiration = auth['expires_in']
+        now = calendar.timegm(datetime.datetime.now().timetuple())
+        self.expiration = now + int(auth['expires_in'])
         self.auth_token = auth['authorization_token']
         self.refresh_token = auth['refresh_token']
 
@@ -77,9 +94,9 @@ class Connection(object):
         """Raw urlopen command to the auth url"""
         url = "https://jlp-ifas.wirelesscar.net/ifas/jlr/tokens"
         auth_headers = {
-                "Authorization": "Basic YXM6YXNwYXNz",
-                "Content-Type": "application/json",
-                "X-Device-Id": self.device_id}
+            "Authorization": "Basic YXM6YXNwYXNz",
+            "Content-Type": "application/json",
+            "X-Device-Id": self.device_id}
 
         req = Request(url, headers=auth_headers)
         # Convert data to json
@@ -96,7 +113,7 @@ class Connection(object):
         data = {
             "access_token": self.access_token,
             "authorization_token": self.auth_token,
-            "expires_in": self.expiration,
+            "expires_in": "86400",
             "deviceID": self.device_id
         }
 
@@ -139,8 +156,20 @@ class Vehicle(dict):
     You can request data or send commands to vehicle. Consult the JLR API documentation for details
     """
 
-    def __init__(self, data, connection):
+    def __init__(self, vin, connection):
         """Initialize the vehicle class."""
 
-        super(Vehicle, self).__init__(data)
         self.connection = connection
+        self.vin = vin
+
+    def get_attributes(self):
+        """Get vehicle attributes"""
+        headers = self.connection.head.copy()
+        headers["Accept"] = "application/vnd.ngtp.org.VehicleAttributes-v3+json"
+        result = self.get('attributes', headers)
+        return result
+
+    def get(self, command, headers):
+        """Utility command to get vehicle data from API"""
+
+        return self.connection.get(command, 'https://jlp-ifoa.wirelesscar.net/if9/jlr/vehicles/%s' % self.vin, headers)
