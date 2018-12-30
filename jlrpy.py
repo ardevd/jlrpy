@@ -16,7 +16,7 @@ class Connection(object):
     def __init__(self,
                  email='',
                  password='',
-                 device_id='',):
+                 device_id='', ):
         """Init the connection object
 
         The email address and password associated with your Jaguar InControl account is required.
@@ -36,7 +36,12 @@ class Connection(object):
 
         self.connect()
 
-        self.vehicles = self.get_vehicles(self.head)
+        self.vehicles = []
+        try:
+            for v in self.get_vehicles(self.head):
+                self.vehicles.append(v['vin'])
+        except TypeError:
+            print("[-] No vehicles associated with this account")
 
     def get(self, command):
         """GET data from API"""
@@ -77,9 +82,9 @@ class Connection(object):
         """Raw urlopen command to the auth url"""
         url = "https://jlp-ifas.wirelesscar.net/ifas/jlr/tokens"
         auth_headers = {
-                "Authorization": "Basic YXM6YXNwYXNz",
-                "Content-Type": "application/json",
-                "X-Device-Id": self.device_id}
+            "Authorization": "Basic YXM6YXNwYXNz",
+            "Content-Type": "application/json",
+            "X-Device-Id": self.device_id}
 
         req = Request(url, headers=auth_headers)
         # Convert data to json
@@ -139,8 +144,8 @@ class Vehicle(dict):
     You can request data or send commands to vehicle. Consult the JLR API documentation for details
     """
 
-    def __init__(self, data, connection):
+    def __init__(self, vin, connection):
         """Initialize the vehicle class."""
 
-        super(Vehicle, self).__init__(data)
+        super(Vehicle, self).__init__(vin)
         self.connection = connection
