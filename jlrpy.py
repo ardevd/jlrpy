@@ -8,7 +8,7 @@ import json
 import datetime
 import calendar
 import uuid
-
+import time
 
 class Connection(object):
     """Connection to the JLR Remote Car API"""
@@ -173,8 +173,3 @@ class Vehicle(dict):
         """Utility command to get vehicle data from API"""
 
         return self.connection.get(command, 'https://jlp-ifoa.wirelesscar.net/if9/jlr/vehicles/%s' % self.vin, headers)
-
-
-c = Connection('edvard.holst@gmail.com', 'KzNyFeb749Crh4KC')
-v = Vehicle('abc', c)
-v.get_attributes()
