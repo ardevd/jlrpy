@@ -22,3 +22,10 @@ c.vehicles
 ```
 
 `Connection.vehicles` will list all vehicles assoiated with your account.
+
+```python
+c.vehicles[0].get_attributes()
+c.vehicles[0].get_status()
+c.vehicles[0].get_subscription_packages()
+c.vehicles[0].get_target_temperature()
+```
