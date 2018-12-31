@@ -169,6 +169,13 @@ class Vehicle(dict):
         result = self.get('attributes', headers)
         return result
 
+    def get_status(self):
+        """Get vehicle status"""
+        headers = self.connection.head.copy()
+        headers["Accept"] = "application/vnd.ngtp.org.if9.healthstatus-v2+json"
+        result = self.get('status', headers)
+        return result
+
     def get(self, command, headers):
         """Utility command to get vehicle data from API"""
 
