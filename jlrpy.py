@@ -38,7 +38,7 @@ class Connection(object):
 
         self.vehicles = []
         try:
-            for v in self.get_vehicles(self.head):
+            for v in self.get_vehicles(self.head)['vehicles']:
                 self.vehicles.append(v['vin'])
         except TypeError:
             print("[-] No vehicles associated with this account")
