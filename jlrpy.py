@@ -47,7 +47,7 @@ class Connection(object):
         """GET data from API"""
         return self.post(command, url, headers, None)
 
-    def post(self, command, url, headers, data={}):
+    def post(self, command, url, headers, data=None):
         """POST data to API"""
         now = calendar.timegm(datetime.datetime.now().timetuple())
         if now > self.expiration:
@@ -66,7 +66,7 @@ class Connection(object):
         self.__login_user(self.head)
         print("[*] 3/3 user logged in, user id retrieved")
 
-    def __open(self, url, headers={}, data=None):
+    def __open(self, url, headers=None, data=None):
         req = Request(url, headers=headers)
         if data:
             req.data = bytes(json.dumps(data), encoding="utf8")
@@ -107,7 +107,7 @@ class Connection(object):
         charset = resp.info().get('charset', 'utf-8')
         return json.loads(resp.read().decode(charset))
 
-    def __register_device(self, headers={}):
+    def __register_device(self, headers=None):
         """Register the device Id"""
         url = "https://jlp-ifop.wirelesscar.net/ifop/jlr/users/%s/clients" % self.email
         data = {
@@ -123,7 +123,7 @@ class Connection(object):
         resp = opener.open(req)
         # TODO: Check for response code
 
-    def __login_user(self, headers={}):
+    def __login_user(self, headers=None):
         """Login the user"""
         url = "https://jlp-ifoa.wirelesscar.net/if9/jlr/users?loginName=%s" % self.email
         user_login_header = headers.copy()
