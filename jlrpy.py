@@ -166,6 +166,8 @@ class Vehicle(dict):
         super().__init__(data)
         self.connection = connection
         self.vin = data['vin']
+        # Authentiate to VHS
+        self.__authenticate_vhs()
 
     def get_attributes(self):
         """Get vehicle attributes"""
@@ -181,6 +183,15 @@ class Vehicle(dict):
         result = self.get('status', headers)
         return result
 
+    def get_health_status(self):
+        """Get vehicle health status"""
+        headers = self.connection.head.copy()
+        headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v4+json"
+        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
+        data = {
+            "token": "cb7720d7-fd08-4785-b566-1b70324f6707"}
+        return self.post('healthstatus', headers, data)
+
     def get_subscription_packages(self):
         """Get vehicle status"""
         result = self.get('subscriptionpackages', self.connection.head)
@@ -190,7 +201,7 @@ class Vehicle(dict):
         """Get the last 1000 trips associated with vehicle"""
         return self.get('trips?count=1000', self.connection.head)
 
-    def authenticate_vhs(self):
+    def __authenticate_vhs(self):
         """Authenticate to vhs and get token"""
         data = {
             "serviceName": "VHS",
@@ -199,8 +210,7 @@ class Vehicle(dict):
         headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.AuthenticateRequest-v2+json; charset=utf-8"
 
         vhs_auth_data = self.post("users/%s/authenticate" % self.connection.user_id, headers, data)
-        vhs_token = vhs_auth_data['token']
-        return vhs_auth_data
+        self.vhs_token = vhs_auth_data['token']
 
     def post(self, command, headers, data):
         """Utility command to post data to VHS"""
