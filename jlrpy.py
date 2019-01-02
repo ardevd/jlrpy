@@ -149,6 +149,10 @@ class Connection(object):
 
         return json.loads(resp.read().decode(charset))
 
+    def get_user_info(self):
+        """Get user information"""
+        return self.get(self.user_id, "https://jlp-ifoa.wirelesscar.net/if9/jlr/users", self.head)
+
 
 class Vehicle(dict):
     """Vehicle class.
