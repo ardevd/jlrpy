@@ -37,4 +37,8 @@ c.vehicles[0].get_status()
 c.vehicles[0].get_subscription_packages()
 # Get trip data (last 1000 trips).
 c.vehicles[0].get_trips()
+# Get vehicle health status
+c.vehicles[0].get_health_status()
+# Get departure timers
+c.vehicles[0].get_departure_timers()
 ```
