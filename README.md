@@ -21,9 +21,10 @@ con = jlrpy.Connection('my@email.com', 'password')
 c.vehicles
 ```
 
-`Connection.vehicles` will list all vehicles assoiated with your account.
+`Connection.vehicles` will list all vehicles assosiated with your account.
 
 ```python
+c.get_user_info()
 c.vehicles[0].get_attributes()
 c.vehicles[0].get_status()
 c.vehicles[0].get_subscription_packages()
