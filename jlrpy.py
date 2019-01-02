@@ -192,6 +192,12 @@ class Vehicle(dict):
             "token": "cb7720d7-fd08-4785-b566-1b70324f6707"}
         return self.post('healthstatus', headers, data)
 
+    def get_departure_timers(self):
+        """Get vehicle departure timers"""
+        headers = self.connection.head.copy()
+        headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.DepartureTimerSettings-v1+json"
+        return self.get("departuretimers", headers)
+
     def get_subscription_packages(self):
         """Get vehicle status"""
         result = self.get('subscriptionpackages', self.connection.head)
