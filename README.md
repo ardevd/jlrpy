@@ -4,6 +4,9 @@
 
 Python 3 library for interacting with the JLR Remote car API. Currently in early development.
 
+## Help Needed
+As I currently do not own a vehicle yet the work represented here is the result of static analysis. If anyone with a vehicle is willing to help me reverse the protocol further, please let me known on Gitter.
+
 ## Security notice
 The SSL certificates used by JLR are issued by GeoTrust in 2017. Both Apple and Google have distrusted these and others after faliure to comply with industry standards for SSL. If you are running MacOS you will currently get SSL verification errors and subsequently you will be unable to use this script without modifications.
 
