@@ -195,8 +195,10 @@ class Vehicle(dict):
         data = {
             "serviceName": "VHS",
             "pin": ""}
+        headers = self.connection.head.copy()
+        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.AuthenticateRequest-v2+json; charset=utf-8"
 
-        vhs_auth_data = self.post("users/%s/authenticate" % self.connection.user_id, self.connection.head, data)
+        vhs_auth_data = self.post("users/%s/authenticate" % self.connection.user_id, headers, data)
         vhs_token = vhs_auth_data['token']
         return vhs_auth_data
 
