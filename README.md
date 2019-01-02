@@ -27,8 +27,14 @@ c.vehicles
 `Connection.vehicles` will list all vehicles assosiated with your account.
 
 ```python
+# Get user information
 c.get_user_info()
+# Get attributes associated with vehicle
 c.vehicles[0].get_attributes()
+# Get current status of vehicle
 c.vehicles[0].get_status()
+# Get subscription packes
 c.vehicles[0].get_subscription_packages()
+# Get trip data (last 1000 trips).
+c.vehicles[0].get_trips()
 ```
