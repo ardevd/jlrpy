@@ -41,4 +41,6 @@ c.vehicles[0].get_trips()
 c.vehicles[0].get_health_status()
 # Get departure timers
 c.vehicles[0].get_departure_timers()
+# Get configured wakeup time
+c.vehicles[0].get_wakeup_time()
 ```
