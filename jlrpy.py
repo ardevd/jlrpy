@@ -39,7 +39,7 @@ class Connection(object):
         self.vehicles = []
         try:
             for v in self.get_vehicles(self.head)['vehicles']:
-                self.vehicles.append(Vehicle(v['vin'], self))
+                self.vehicles.append(Vehicle(v, self))
         except TypeError:
             print("[-] No vehicles associated with this account")
 
@@ -160,11 +160,12 @@ class Vehicle(dict):
     You can request data or send commands to vehicle. Consult the JLR API documentation for details
     """
 
-    def __init__(self, vin, connection):
+    def __init__(self, data, connection):
         """Initialize the vehicle class."""
 
+        super().__init__(data)
         self.connection = connection
-        self.vin = vin
+        self.vin = data['vin']
 
     def get_attributes(self):
         """Get vehicle attributes"""
