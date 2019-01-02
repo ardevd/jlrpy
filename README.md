@@ -43,4 +43,6 @@ c.vehicles[0].get_health_status()
 c.vehicles[0].get_departure_timers()
 # Get configured wakeup time
 c.vehicles[0].get_wakeup_time()
+# Honk horn and blink lights
+c.vehicles[0].honk_blink()
 ```
