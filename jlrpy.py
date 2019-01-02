@@ -212,12 +212,12 @@ class Vehicle(dict):
         """Get the last 1000 trips associated with vehicle"""
         return self.get('trips?count=1000', self.connection.head)
 
-    def blink_horn(self):
+    def honk_blink(self):
         """Sound the horn and blink lights"""
         headers = self.connection.head.copy()
         headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v4+json"
         headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
-        
+
         return self.post("honkBlink", headers, self.vhs_data)
 
     def __authenticate_vhs(self):
