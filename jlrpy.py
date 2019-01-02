@@ -198,6 +198,12 @@ class Vehicle(dict):
         headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.DepartureTimerSettings-v1+json"
         return self.get("departuretimers", headers)
 
+    def get_wakeup_time(self):
+        """Get configured wakeup time for vehicle"""
+        headers = self.connection.head.copy()
+        headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.VehicleWakeupTime-v2+json"
+        return self.get("wakeuptime", headers)
+
     def get_subscription_packages(self):
         """Get vehicle status"""
         result = self.get('subscriptionpackages', self.connection.head)
