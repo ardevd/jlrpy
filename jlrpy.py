@@ -186,6 +186,10 @@ class Vehicle(dict):
         result = self.get('subscriptionpackages', self.connection.head)
         return result
 
+    def get_trips(self):
+        """Get the last 1000 trips associated with vehicle"""
+        return self.get('trips?count=1000', self.connection.head)
+
     def get(self, command, headers):
         """Utility command to get vehicle data from API"""
 
