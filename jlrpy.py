@@ -181,11 +181,6 @@ class Vehicle(dict):
         result = self.get('subscriptionpackages', self.connection.head)
         return result
 
-    def get_target_temperature(self):
-        """Get target temperature for vehicle"""
-        result = self.get('settings/ClimateControlRccTargetTemp', self.connection.head)
-        return result
-
     def get(self, command, headers):
         """Utility command to get vehicle data from API"""
 
