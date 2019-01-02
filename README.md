@@ -45,4 +45,6 @@ c.vehicles[0].get_departure_timers()
 c.vehicles[0].get_wakeup_time()
 # Honk horn and blink lights
 c.vehicles[0].honk_blink()
+# Get current position of vehicle
+c.vehicles[0].get_position()
 ```

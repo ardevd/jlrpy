@@ -212,6 +212,10 @@ class Vehicle(dict):
         """Get the last 1000 trips associated with vehicle"""
         return self.get('trips?count=1000', self.connection.head)
 
+    def get_position(self):
+        """Get current vehicle position"""
+        return self.get('position', self.connection.head)
+
     def honk_blink(self):
         """Sound the horn and blink lights"""
         headers = self.connection.head.copy()
