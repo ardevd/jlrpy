@@ -190,7 +190,21 @@ class Vehicle(dict):
         """Get the last 1000 trips associated with vehicle"""
         return self.get('trips?count=1000', self.connection.head)
 
+    def authenticate_vhs(self):
+        """Authenticate to vhs and get token"""
+        data = {
+            "serviceName": "VHS",
+            "pin": ""}
+
+        vhs_auth_data = self.post("users/%s/authenticate" % self.connection.user_id, self.connection.head, data)
+        vhs_token = vhs_auth_data['token']
+        return vhs_auth_data
+
+    def post(self, command, headers, data):
+        """Utility command to post data to VHS"""
+        return self.connection.post(command, 'https://jlp-ifoa.wirelesscar.net/if9/jlr/vehicles/%s' % self.vin,
+                                    headers, data)
+
     def get(self, command, headers):
         """Utility command to get vehicle data from API"""
-
         return self.connection.get(command, 'https://jlp-ifoa.wirelesscar.net/if9/jlr/vehicles/%s' % self.vin, headers)
