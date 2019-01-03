@@ -222,7 +222,8 @@ class Vehicle(dict):
         headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v4+json"
         headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
 
-        return self.post("honkBlink", headers, self.vhs_data)
+        hblf_data = self.authenticate_hblf()
+        return self.post("honkBlink", headers, hblf_data)
 
     def __authenticate_vhs(self):
         """Authenticate to vhs and get token"""
@@ -235,6 +236,17 @@ class Vehicle(dict):
         vhs_auth_data = self.post("users/%s/authenticate" % self.connection.user_id, headers, data)
         self.vhs_data = {
             "token": vhs_auth_data['token']}
+
+    def authenticate_hblf(self):
+        """Authenticate to hblf and get token"""
+        data = {
+            "serviceName": "HBLF",
+            "pin": "%s" % self.vin[-4:]}
+        headers = self.connection.head.copy()
+        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.AuthenticateRequest-v2+json; charset=utf-8"
+
+        return self.post("users/%s/authenticate" % self.connection.user_id, headers, data)
+
 
     def post(self, command, headers, data):
         """Utility command to post data to VHS"""
