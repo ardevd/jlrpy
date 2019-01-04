@@ -225,6 +225,19 @@ class Vehicle(dict):
         hblf_data = self.authenticate_hblf()
         return self.post("honkBlink", headers, hblf_data)
 
+    def climate_start(self, target_temp):
+        """Start pre-conditioning for specified temperature (celsius)"""
+        headers = self.connection.head.copy()
+        headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v5+json"
+        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.PhevService-v1+json; charset=utf"
+
+        ecc_data = self.authenticate_ecc()
+        ecc_data['serviceParameters'] = [{"key": "PRECONDITIONING",
+                                          "value": "START"},
+                                         {"key": "TARGET_TEMPERATURE_CELSIUS",
+                                          "value": "%s" % target_temp}]
+        return self.post("preconditioning", headers, ecc_data)
+
     def __authenticate_vhs(self):
         """Authenticate to vhs and get token"""
         data = {
@@ -238,15 +251,22 @@ class Vehicle(dict):
             "token": vhs_auth_data['token']}
 
     def authenticate_hblf(self):
-        """Authenticate to hblf and get token"""
+        """Authenticate to hblf"""
+        return self.authenticate_vin_protected_service("HBLF")
+
+    def authenticate_ecc(self):
+        """Authenticate to ecc"""
+        return self.authenticate_vin_protected_service("ECC")
+
+    def authenticate_vin_protected_service(self, service_name):
+        """Authenticate to specified service and return associated token"""
         data = {
-            "serviceName": "HBLF",
+            "serviceName": "%s" % service_name,
             "pin": "%s" % self.vin[-4:]}
         headers = self.connection.head.copy()
         headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.AuthenticateRequest-v2+json; charset=utf-8"
 
         return self.post("users/%s/authenticate" % self.connection.user_id, headers, data)
-
 
     def post(self, command, headers, data):
         """Utility command to post data to VHS"""
