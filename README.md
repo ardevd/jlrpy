@@ -2,7 +2,7 @@
 
 [![Join the chat at https://gitter.im/jlrpy/community](https://badges.gitter.im/jlrpy/community.svg)](https://gitter.im/jlrpy/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-Python 3 library for interacting with the JLR Remote car API. Currently in early development. The associated API documentation for the JLR InControl API is currently in equally development and is available [here](https://documenter.getpostman.com/view/6250319/RznBMzqo)
+Python 3 library for interacting with the JLR Remote car API. Currently in early development. The associated API documentation for the JLR InControl API is currently in equally early development and is available [here](https://documenter.getpostman.com/view/6250319/RznBMzqo)
 
 ## Help Needed
 As I currently do not own a vehicle yet the work represented here is the result of static analysis. If anyone with a vehicle is willing to help me reverse the protocol further, please let me known on Gitter.
