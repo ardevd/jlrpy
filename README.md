@@ -47,4 +47,8 @@ c.vehicles[0].get_wakeup_time()
 c.vehicles[0].honk_blink()
 # Get current position of vehicle
 c.vehicles[0].get_position()
+# Start preconditioning at 21.0C
+c.vehicles[0].preconditioning_start("210")
+# Stop preconditioning
+c.vehicles[0].preconditioning_stop()
 ```
