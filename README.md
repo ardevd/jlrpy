@@ -20,7 +20,7 @@ The JLR API requires a device ID to be registered (UUID4 formatted). If you do n
 ```python
 import jlrpy
 
-con = jlrpy.Connection('my@email.com', 'password')
+c = jlrpy.Connection('my@email.com', 'password')
 c.vehicles
 ```
 
