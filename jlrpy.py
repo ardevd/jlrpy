@@ -227,15 +227,27 @@ class Vehicle(dict):
 
     def climate_start(self, target_temp):
         """Start pre-conditioning for specified temperature (celsius)"""
+        service_parameters = [{"key": "PRECONDITIONING",
+                                          "value": "START"},
+                                         {"key": "TARGET_TEMPERATURE_CELSIUS",
+                                          "value": "%s" % target_temp}]
+        return self.preconditioning_control(service_parameters)
+
+    def climate_stop(self):
+        """Stop climate preconditioning"""
+        service_parameters = [{"key": "PRECONDITIONING",
+                               "value": "STOP"}]
+        return self.preconditioning_control(service_parameters)
+
+    def preconditioning_control(self, service_parameters):
+        """Control the climate preconditioning"""
         headers = self.connection.head.copy()
         headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v5+json"
         headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.PhevService-v1+json; charset=utf"
 
         ecc_data = self.authenticate_ecc()
-        ecc_data['serviceParameters'] = [{"key": "PRECONDITIONING",
-                                          "value": "START"},
-                                         {"key": "TARGET_TEMPERATURE_CELSIUS",
-                                          "value": "%s" % target_temp}]
+        ecc_data['serviceParameters'] = service_parameters
+
         return self.post("preconditioning", headers, ecc_data)
 
     def __authenticate_vhs(self):
