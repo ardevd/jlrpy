@@ -225,21 +225,21 @@ class Vehicle(dict):
         hblf_data = self.authenticate_hblf()
         return self.post("honkBlink", headers, hblf_data)
 
-    def climate_start(self, target_temp):
+    def preconditioning_start(self, target_temp):
         """Start pre-conditioning for specified temperature (celsius)"""
         service_parameters = [{"key": "PRECONDITIONING",
                                           "value": "START"},
                                          {"key": "TARGET_TEMPERATURE_CELSIUS",
                                           "value": "%s" % target_temp}]
-        return self.preconditioning_control(service_parameters)
+        return self._preconditioning_control(service_parameters)
 
-    def climate_stop(self):
+    def preconditioning_stop(self):
         """Stop climate preconditioning"""
         service_parameters = [{"key": "PRECONDITIONING",
                                "value": "STOP"}]
-        return self.preconditioning_control(service_parameters)
+        return self._preconditioning_control(service_parameters)
 
-    def preconditioning_control(self, service_parameters):
+    def _preconditioning_control(self, service_parameters):
         """Control the climate preconditioning"""
         headers = self.connection.head.copy()
         headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v5+json"
