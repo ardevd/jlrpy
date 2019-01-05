@@ -8,7 +8,6 @@ import json
 import datetime
 import calendar
 import uuid
-import time
 
 class Connection(object):
     """Connection to the JLR Remote Car API"""
