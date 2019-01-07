@@ -269,6 +269,10 @@ class Vehicle(dict):
         """Authenticate to ecc"""
         return self.authenticate_vin_protected_service("ECC")
 
+    def authenticate_cp(self):
+        """Authenticate to cp"""
+        return self.authenticate_vin_protected_service("CP")
+
     def authenticate_vin_protected_service(self, service_name):
         """Authenticate to specified service and return associated token"""
         data = {
