@@ -5,7 +5,7 @@
 Python 3 library for interacting with the JLR Remote car API. Currently in early development. The associated API documentation for the JLR InControl API is currently in equally early development and is available [here](https://documenter.getpostman.com/view/6250319/RznBMzqo)
 
 ## Help Needed
-As I currently do not own a vehicle yet the work represented here is the result of static analysis. If anyone with a vehicle is willing to help me reverse the protocol further, please let me known on Gitter.
+As I currently do not own a vehicle yet the work represented here is the result of static analysis. If anyone with a vehicle is willing to help me reverse the protocol further, please let me known on Gitter. Also, be sure to check out any available pull requests and test out the described functionality there. 
 
 ## Security notice
 The SSL certificates used by JLR are issued by GeoTrust in 2017. Both Apple and Google have distrusted these and others after faliure to comply with industry standards for SSL. If you are running MacOS you will currently get SSL verification errors and subsequently you will be unable to use this script without modifications. To disable SSL verification you can check out [this guide](http://blog.pengyifan.com/how-to-fix-python-ssl-certificate_verify_failed/).
