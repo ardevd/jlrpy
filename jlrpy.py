@@ -287,6 +287,10 @@ class Vehicle(dict):
         """Authenticate to rdl"""
         return self.authenticate_pin_protected_service(pin, "RDL")
 
+    def authenticate_rdu(self, pin):
+        """Authenticate to rdu"""
+        return self.authenticate_pin_protected_service(pin, "RDU")
+
     def authenticate_pin_protected_service(self, pin, service_name):
         """Authenticate to specified service with the provided PIN"""
         data = {
