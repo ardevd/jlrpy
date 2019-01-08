@@ -283,6 +283,24 @@ class Vehicle(dict):
 
         return self.post("users/%s/authenticate" % self.connection.user_id, headers, data)
 
+    def authenticate_rdl(self, pin):
+        """Authenticate to rdl"""
+        return self.authenticate_pin_protected_service(pin, "RDL")
+
+    def authenticate_rdu(self, pin):
+        """Authenticate to rdu"""
+        return self.authenticate_pin_protected_service(pin, "RDU")
+
+    def authenticate_pin_protected_service(self, pin, service_name):
+        """Authenticate to specified service with the provided PIN"""
+        data = {
+            "serviceName": "%s" % service_name,
+            "pin": "%s" % pin}
+        headers = self.connection.head.copy()
+        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.AuthenticateRequest-v2+json; charset=utf-8"
+
+        return self.post("users/%s/authenticate" % self.connection.user_id, headers, data)
+
     def post(self, command, headers, data):
         """Utility command to post data to VHS"""
         return self.connection.post(command, 'https://jlp-ifoa.wirelesscar.net/if9/jlr/vehicles/%s' % self.vin,
