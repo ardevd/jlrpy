@@ -51,4 +51,8 @@ c.vehicles[0].get_position()
 c.vehicles[0].preconditioning_start("210")
 # Stop preconditioning
 c.vehicles[0].preconditioning_stop()
+# Lock vehicle
+c.vehicles[0].lock()
+# Unlock vehicle
+c.vehicles[0].unlock()
 ```
