@@ -215,6 +215,22 @@ class Vehicle(dict):
         """Get current vehicle position"""
         return self.get('position', self.connection.head)
 
+    def lock(self, pin):
+        """Lock vehicle. Requires personal PIN for authentication"""
+        headers = self.connection.head.copy()
+        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v2+json"
+        rdl_data = self.authenticate_rdl(pin)
+
+        return self.post("lock", headers, rdl_data)
+
+    def unlock(self, pin):
+        """Unlock vehicle. Requires personal PIN for authentication"""
+        headers = self.connection.head.copy()
+        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v2+json"
+        rdu_data = self.authenticate_rdu(pin)
+
+        return self.post("unlock", headers, rdl_data)
+
     def honk_blink(self):
         """Sound the horn and blink lights"""
         headers = self.connection.head.copy()
