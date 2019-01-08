@@ -229,7 +229,7 @@ class Vehicle(dict):
         headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v2+json"
         rdu_data = self.authenticate_rdu(pin)
 
-        return self.post("unlock", headers, rdl_data)
+        return self.post("unlock", headers, rdu_data)
 
     def honk_blink(self):
         """Sound the horn and blink lights"""
