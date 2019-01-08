@@ -254,6 +254,12 @@ class Vehicle(dict):
                                "value": "STOP"}]
         return self._preconditioning_control(service_parameters)
 
+    def climate_prioritize(self, priority):
+        """Optimize climate controls for comfort or range"""
+        service_parameters = [{"key": "PRIORITY_SETTING",
+                               "value": "%s" % priority}]
+        return self._preconditioning_control(service_parameters)
+
     def _preconditioning_control(self, service_parameters):
         """Control the climate preconditioning"""
         headers = self.connection.head.copy()
