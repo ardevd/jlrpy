@@ -21,7 +21,7 @@ The JLR API requires a device ID to be registered (UUID4 formatted). If you do n
 import jlrpy
 
 c = jlrpy.Connection('my@email.com', 'password')
-c.vehicles
+v = c.vehicles[0]
 ```
 
 `Connection.vehicles` will list all vehicles assosiated with your account.
@@ -30,29 +30,29 @@ c.vehicles
 # Get user information
 c.get_user_info()
 # Get attributes associated with vehicle
-c.vehicles[0].get_attributes()
+v.get_attributes()
 # Get current status of vehicle
-c.vehicles[0].get_status()
+v.get_status()
 # Get subscription packes
-c.vehicles[0].get_subscription_packages()
+v.get_subscription_packages()
 # Get trip data (last 1000 trips).
-c.vehicles[0].get_trips()
+v.get_trips()
 # Get vehicle health status
-c.vehicles[0].get_health_status()
+v.get_health_status()
 # Get departure timers
-c.vehicles[0].get_departure_timers()
+v.get_departure_timers()
 # Get configured wakeup time
-c.vehicles[0].get_wakeup_time()
+v.get_wakeup_time()
 # Honk horn and blink lights
-c.vehicles[0].honk_blink()
+v.honk_blink()
 # Get current position of vehicle
-c.vehicles[0].get_position()
+v.get_position()
 # Start preconditioning at 21.0C
-c.vehicles[0].preconditioning_start("210")
+v.preconditioning_start("210")
 # Stop preconditioning
-c.vehicles[0].preconditioning_stop()
+v.preconditioning_stop()
 # Lock vehicle
-c.vehicles[0].lock()
+v.lock()
 # Unlock vehicle
-c.vehicles[0].unlock()
+v.unlock()
 ```
