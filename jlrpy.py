@@ -271,6 +271,31 @@ class Vehicle(dict):
 
         return self.post("preconditioning", headers, ecc_data)
 
+    def charging_stop(self):
+        """Stop charging"""
+        service_parameters = [{"key": "CHARGE_NOW_SETTING",
+                               "value": "FORCE_OFF"}]
+
+        return self._charging_profile_control(service_parameters)
+
+    def charging_start(self):
+        """Start charging"""
+        service_parameters = [{"key": "CHARGE_NOW_SETTING",
+                               "value": "FORCE_ON"}]
+
+        return self._charging_profile_control(service_parameters)
+
+    def _charging_profile_control(self, service_parameters):
+        """Charging profile API"""
+        headers = self.connection.head_copy()
+        headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v5+json"
+        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.PhevService-v1+json; charset=utf-8"
+
+        cp_data = self.authenticate_cp()
+        cp_data['serviceParameters'] = service_parameters
+
+        return self.post("chargeProfile", headers, cp_data)
+
     def __authenticate_vhs(self):
         """Authenticate to vhs and get token"""
         data = {
