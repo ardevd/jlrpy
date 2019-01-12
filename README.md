@@ -55,4 +55,8 @@ v.preconditioning_stop()
 v.lock()
 # Unlock vehicle
 v.unlock()
+# Start charging
+v.start_charging()
+# Stop charging
+v.stop_charging()
 ```
