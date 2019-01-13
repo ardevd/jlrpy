@@ -297,7 +297,7 @@ class Vehicle(dict):
 
     def delete_departure_timer(self, index):
         """Delete a single departure timer associated with the specified index"""
-        departure_timer_setting  = {"timers": [{"timerIndex": index}]}
+        departure_timer_setting = {"timers": [{"timerIndex": index}]}
 
         return self._charging_profile_control("departureTimerSetting", departure_timer_setting)
 
