@@ -295,6 +295,16 @@ class Vehicle(dict):
 
         return self._charging_profile_control("departureTimerSetting", departure_timer_setting)
 
+    def add_repeated_departure_timer(self, index, schedule, hour, minute):
+        """Add repeated departure timer."""
+        departure_timer_setting = {"timers": [
+            {"departureTime": {"hour": hour, "minute": minute},
+             "timerIndex": index, "timerTarget":
+                 {"repeatSchedule": schedule},
+             "timerType": {"key": "BOTHCHARGEANDPRECONDITION", "value": True}}]}
+
+        return self._charging_profile_control("departureTimerSetting", departure_timer_setting)
+
     def delete_departure_timer(self, index):
         """Delete a single departure timer associated with the specified index"""
         departure_timer_setting = {"timers": [{"timerIndex": index}]}
