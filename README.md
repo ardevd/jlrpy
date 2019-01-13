@@ -63,4 +63,7 @@ v.stop_charging()
 v.add_departure_timer(10, 2019, 1, 30, 20, 30)
 # Delete a single departure timer index.
 v.delete_departure_timer(10)
+# Schedule repeated departure timer.
+schedule = {"friday":false,"monday":true,"saturday":false,"sunday":false,"thursday":false,"tuesday":true,"wednesday":true}
+v.add_repeated_departure_timer(10, 20, 30, schedule)
 ```
