@@ -313,7 +313,7 @@ class Vehicle(dict):
 
     def _charging_profile_control(self, service_parameter_key, service_parameters):
         """Charging profile API"""
-        headers = self.connection.head_copy()
+        headers = self.connection.head.copy()
         headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v5+json"
         headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.PhevService-v1+json; charset=utf-8"
 
