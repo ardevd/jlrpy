@@ -322,8 +322,8 @@ class Vehicle(dict):
 
         return self.post("chargeProfile", headers, cp_data)
 
-    def set_wakeup_timer(self, wakeup_time):
-        """Set the wakeup timer for the specified time (epoch milliseconds)"""
+    def set_wakeup_time(self, wakeup_time):
+        """Set the wakeup time for the specified time (epoch milliseconds)"""
         headers = self.connection.head.copy()
         headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v3+json"
         headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
