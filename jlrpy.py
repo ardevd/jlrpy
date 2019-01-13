@@ -165,8 +165,6 @@ class Vehicle(dict):
         super().__init__(data)
         self.connection = connection
         self.vin = data['vin']
-        # Authentiate to VHS
-        self.__authenticate_vhs()
 
     def get_attributes(self):
         """Get vehicle attributes"""
@@ -188,7 +186,9 @@ class Vehicle(dict):
         headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v4+json"
         headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
 
-        return self.post('healthstatus', headers, self.vhs_data)
+        vhs_data = self._authenticate_vhs()
+
+        return self.post('healthstatus', headers, vhs_data)
 
     def get_departure_timers(self):
         """Get vehicle departure timers"""
@@ -322,31 +322,48 @@ class Vehicle(dict):
 
         return self.post("chargeProfile", headers, cp_data)
 
-    def __authenticate_vhs(self):
+    def set_wakeup_timer(self, wakeup_time):
+        """Set the wakeup timer for the specified time (epoch milliseconds)"""
+        headers = self.connection.head.copy()
+        headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v3+json"
+        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
+
+        swu_data = self.authenticate_swu()
+        swu_data["serviceCommand"] = "START"
+        swu_data["startTime"] = wakeup_time
+
+        return self.post("swu", headers, swu_data)
+
+    def _authenticate_vhs(self):
         """Authenticate to vhs and get token"""
+        return self._authenticate_empty_pin_protected_service("VHS")
+
+    def _authenticate_empty_pin_protected_service(self, service_name):
         data = {
-            "serviceName": "VHS",
+            "serviceName": service_name,
             "pin": ""}
         headers = self.connection.head.copy()
         headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.AuthenticateRequest-v2+json; charset=utf-8"
 
-        vhs_auth_data = self.post("users/%s/authenticate" % self.connection.user_id, headers, data)
-        self.vhs_data = {
-            "token": vhs_auth_data['token']}
+        return self.post("users/%s/authenticate" % self.connection.user_id, headers, data)
 
     def authenticate_hblf(self):
         """Authenticate to hblf"""
-        return self.authenticate_vin_protected_service("HBLF")
+        return self._authenticate_vin_protected_service("HBLF")
 
     def authenticate_ecc(self):
         """Authenticate to ecc"""
-        return self.authenticate_vin_protected_service("ECC")
+        return self._authenticate_vin_protected_service("ECC")
 
     def authenticate_cp(self):
         """Authenticate to cp"""
-        return self.authenticate_vin_protected_service("CP")
+        return self._authenticate_vin_protected_service("CP")
 
-    def authenticate_vin_protected_service(self, service_name):
+    def authenticate_swu(self):
+        """Authenticate to swu"""
+        return self._authenticate_empty_pin_protected_service("SWU")
+
+    def _authenticate_vin_protected_service(self, service_name):
         """Authenticate to specified service and return associated token"""
         data = {
             "serviceName": "%s" % service_name,
@@ -358,13 +375,13 @@ class Vehicle(dict):
 
     def authenticate_rdl(self, pin):
         """Authenticate to rdl"""
-        return self.authenticate_pin_protected_service(pin, "RDL")
+        return self._authenticate_pin_protected_service(pin, "RDL")
 
     def authenticate_rdu(self, pin):
         """Authenticate to rdu"""
-        return self.authenticate_pin_protected_service(pin, "RDU")
+        return self._authenticate_pin_protected_service(pin, "RDU")
 
-    def authenticate_pin_protected_service(self, pin, service_name):
+    def _authenticate_pin_protected_service(self, pin, service_name):
         """Authenticate to specified service with the provided PIN"""
         data = {
             "serviceName": "%s" % service_name,
