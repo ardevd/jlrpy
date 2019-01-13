@@ -276,23 +276,39 @@ class Vehicle(dict):
         service_parameters = [{"key": "CHARGE_NOW_SETTING",
                                "value": "FORCE_OFF"}]
 
-        return self._charging_profile_control(service_parameters)
+        return self._charging_profile_control("serviceParameters", service_parameters)
 
     def charging_start(self):
         """Start charging"""
         service_parameters = [{"key": "CHARGE_NOW_SETTING",
                                "value": "FORCE_ON"}]
 
-        return self._charging_profile_control(service_parameters)
+        return self._charging_profile_control("serviceParameters", service_parameters)
 
-    def _charging_profile_control(self, service_parameters):
+    def add_departure_timer(self, index, year, month, day, hour, minute):
+        """Add a single departure timer with the specified index"""
+        departure_timer_setting = {"timers": [
+            {"departureTime": {"hour": hour, "minute": minute},
+             "timerIndex": index, "timerTarget":
+                 {"singleDay": {"day": day, "month": month, "year": year}},
+             "timerType": {"key": "BOTHCHARGEANDPRECONDITION", "value": True}}]}
+
+        return self._charging_profile_control("departureTimerSetting", departure_timer_setting)
+
+    def delete_departure_timer(self, index):
+        """Delete a single departure timer associated with the specified index"""
+        departure_timer_setting  = {"timers": [{"timerIndex": index}]}
+
+        return self._charging_profile_control("departureTimerSetting", departure_timer_setting)
+
+    def _charging_profile_control(self, service_parameter_key, service_parameters):
         """Charging profile API"""
         headers = self.connection.head_copy()
         headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v5+json"
         headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.PhevService-v1+json; charset=utf-8"
 
         cp_data = self.authenticate_cp()
-        cp_data['serviceParameters'] = service_parameters
+        cp_data[service_parameter_key] = service_parameters
 
         return self.post("chargeProfile", headers, cp_data)
 
