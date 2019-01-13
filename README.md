@@ -59,4 +59,8 @@ v.unlock()
 v.start_charging()
 # Stop charging
 v.stop_charging()
+# Add single departure timer (index, year, month, day, hour, minute)
+v.add_departure_timer(10, 2019, 1, 30, 20, 30)
+# Delete a single departure timer index.
+v.delete_departure_timer(10)
 ```
