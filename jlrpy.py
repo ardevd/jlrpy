@@ -59,7 +59,7 @@ class Connection(object):
         auth = self.__authenticate(data=self.oauth)
         self.__register_auth(auth)
         print("[*] 1/3 authenticated")
-        self.__set_header(auth['access_token'], auth['expires_in'])
+        self.__set_header(auth['access_token'])
         self.__register_device(self.head)
         print("[*] 2/3 device id registered")
         self.__login_user(self.head)
