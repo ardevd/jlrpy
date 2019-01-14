@@ -9,6 +9,7 @@ import datetime
 import calendar
 import uuid
 
+
 class Connection(object):
     """Connection to the JLR Remote Car API"""
 
@@ -243,9 +244,9 @@ class Vehicle(dict):
     def preconditioning_start(self, target_temp):
         """Start pre-conditioning for specified temperature (celsius)"""
         service_parameters = [{"key": "PRECONDITIONING",
-                                          "value": "START"},
-                                         {"key": "TARGET_TEMPERATURE_CELSIUS",
-                                          "value": "%s" % target_temp}]
+                               "value": "START"},
+                              {"key": "TARGET_TEMPERATURE_CELSIUS",
+                               "value": "%s" % target_temp}]
         return self._preconditioning_control(service_parameters)
 
     def preconditioning_stop(self):
