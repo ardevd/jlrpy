@@ -6,7 +6,7 @@ max_soc = 80  # SET MAX SOC LEVEL HERE
 
 
 def check_soc():
-    threading.Timer(60.0, check_soc).start() # Called every minute
+    threading.Timer(60.0, check_soc).start()  # Called every minute
 
     status = v.get_status()['vehicleStatus']
     # Get current soc
