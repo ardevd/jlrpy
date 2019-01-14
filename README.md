@@ -56,9 +56,9 @@ v.lock()
 # Unlock vehicle
 v.unlock()
 # Start charging
-v.start_charging()
+v.charging_start()
 # Stop charging
-v.stop_charging()
+v.charging_stop()
 # Add single departure timer (index, year, month, day, hour, minute)
 v.add_departure_timer(10, 2019, 1, 30, 20, 30)
 # Delete a single departure timer index.
