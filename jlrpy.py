@@ -337,13 +337,21 @@ class Vehicle(dict):
 
     def enable_service_mode(self, pin, expiration_time):
         """Enable service mode. Will disable at the specified time (epoch millis)"""
+        self._disable_theft_alarm(pin, expiration_time, "protectionStrategy_serviceMode")
+
+    def enable_transport_mode(self, pin, expiration_time):
+        """Enable transport mode. Will be disabled at the specified time (epoch millis)"""
+        self._disable_theft_alarm(pin, expiration_time, "protectionStrategy_transportMode")
+
+    def _disable_theft_alarm(self, pin, expiration_time, mode):
+        """Enable transport mode or service mode"""
         headers = self.connection.head.copy()
         headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v4+json"
         headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
 
         prov_data = self.authenticate_prov(pin)
 
-        prov_data["serviceCommand"] = "protectionStrategy_serviceMode"
+        prov_data["serviceCommand"] = mode
         prov_data["startTime"] = None
         prov_data["endTime"] = expiration_time
 
