@@ -59,7 +59,7 @@ class Connection(object):
         auth = self.__authenticate(data=self.oauth)
         self.__register_auth(auth)
         print("[*] 1/3 authenticated")
-        self.__setheader(auth['access_token'], auth['expires_in'])
+        self.__set_header(auth['access_token'], auth['expires_in'])
         self.__register_device(self.head)
         print("[*] 2/3 device id registered")
         self.__login_user(self.head)
@@ -82,7 +82,7 @@ class Connection(object):
         self.auth_token = auth['authorization_token']
         self.refresh_token = auth['refresh_token']
 
-    def __setheader(self, access_token, expiration=float('inf')):
+    def __set_header(self, access_token):
         """Set HTTP header fields"""
         self.head = {
             "Authorization": "Bearer %s" % access_token,
