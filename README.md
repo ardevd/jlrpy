@@ -73,3 +73,9 @@ v.set_wakeup_time(1547845200000)
 # Enable transport mode (requires personal PIN)
 `v.enable_transport_mode("1234", 1547551847000)`
 ```
+
+## Examples
+The examples directory contains example scripts that put jlrpy to good use. 
+
+### max_min_soc.py
+The `max_min_soc.py` script allows you to specify a desired maximum and minimum state of charge for the vehicle. Charging will be stopped once the maximum state of charge is reached and it will be started if the minimum state of charge is reached. 
