@@ -185,7 +185,8 @@ class Vehicle(dict):
         """Get vehicle health status"""
         headers = self.connection.head.copy()
         headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v4+json"
-        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
+        headers[
+            "Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
 
         vhs_data = self._authenticate_vhs()
 
@@ -236,7 +237,8 @@ class Vehicle(dict):
         """Sound the horn and blink lights"""
         headers = self.connection.head.copy()
         headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v4+json"
-        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
+        headers[
+            "Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
 
         hblf_data = self.authenticate_hblf()
         return self.post("honkBlink", headers, hblf_data)
@@ -312,6 +314,28 @@ class Vehicle(dict):
 
         return self._charging_profile_control("departureTimerSetting", departure_timer_setting)
 
+    def add_charging_period(self, index, schedule, hour_from, minute_from, hour_to, minute_to):
+        """Add charging period"""
+        tariff_settings = {"tariffs": [
+            {"tariffIndex": index, "tariffDefinition": {"enabled": True,
+                                                        "repeatSchedule": schedule,
+                                                        "tariffZone": [
+                                                            {"zoneName": "TARIFF_ZONE_A",
+                                                             "bandType": "PEAK",
+                                                             "endTime": {
+                                                                 "hour": hour_from,
+                                                                 "minute": minute_from}},
+                                                            {"zoneName": "TARIFF_ZONE_B",
+                                                             "bandType": "OFFPEAK",
+                                                             "endTime": {"hour": hour_to,
+                                                                         "minute": minute_to}},
+                                                            {"zoneName": "TARIFF_ZONE_C",
+                                                             "bandType": "PEAK",
+                                                             "endTime": {"hour": 0,
+                                                                         "minute": 0}}]}}]}
+
+        return self._charging_profile_control("tariffSettings", tariff_settings)
+
     def _charging_profile_control(self, service_parameter_key, service_parameters):
         """Charging profile API"""
         headers = self.connection.head.copy()
@@ -327,7 +351,8 @@ class Vehicle(dict):
         """Set the wakeup time for the specified time (epoch milliseconds)"""
         headers = self.connection.head.copy()
         headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v3+json"
-        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
+        headers[
+            "Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
 
         swu_data = self.authenticate_swu()
         swu_data["serviceCommand"] = "START"
