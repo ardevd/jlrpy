@@ -334,6 +334,20 @@ class Vehicle(dict):
 
         return self.post("swu", headers, swu_data)
 
+    def enable_service_mode(self, pin, expiration_time):
+        """Enable service mode. Will disable at the specified time (epoch millis)"""
+        headers = self.connection.head.copy()
+        headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v4+json"
+        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
+
+        prov_data = self.authenticate_prov(pin)
+
+        prov_data["serviceCommand"] = "protectionStrategy_serviceMode"
+        prov_data["startTime"] = None
+        prov_data["endTime"] = expiration_time
+
+        return self.post("prov", headers, prov_data)
+
     def _authenticate_vhs(self):
         """Authenticate to vhs and get token"""
         return self._authenticate_empty_pin_protected_service("VHS")
@@ -380,6 +394,10 @@ class Vehicle(dict):
     def authenticate_rdu(self, pin):
         """Authenticate to rdu"""
         return self._authenticate_pin_protected_service(pin, "RDU")
+
+    def authenticate_prov(self, pin):
+        """Authenticate to PROV service"""
+        return self._authenticate_pin_protected_service(pin, "PROV")
 
     def _authenticate_pin_protected_service(self, pin, service_name):
         """Authenticate to specified service with the provided PIN"""
