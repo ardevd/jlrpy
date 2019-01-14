@@ -1,11 +1,23 @@
+# -*- coding: utf-8 -*-
+"""Max SOC script.
+
+This script will check the charging level once every minute
+and if the current battery level meets or exceeds the specified
+maximum value, the charging will stop if the vehicle is currently charging.
+"""
+
 import jlrpy
 import threading
 
 
-max_soc = 80  # SET MAX SOC LEVEL HERE
+max_soc = 80  # SET MAX SOC LEVEL HERE (percentage)
 
 
 def check_soc():
+    """Retrieve vehicle status and stop charging if
+    current charging level matches or exceeds specified max level and
+    the vehicle is currently charging.
+    """
     threading.Timer(60.0, check_soc).start()  # Called every minute
 
     status = v.get_status()['vehicleStatus']
