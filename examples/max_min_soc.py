@@ -28,7 +28,7 @@ def check_soc():
     # Get current soc
     current_soc = int(status[38].get('value'))
     # Get current charging state
-    charging_state = status[6]
+    charging_state = status[44]
     if current_soc >= max_soc and charging_state is "CHARGING":
         # Stop charging if we are currently charging
         v.charging_stop()
