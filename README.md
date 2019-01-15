@@ -59,6 +59,10 @@ v.unlock()
 v.charging_start()
 # Stop charging
 v.charging_stop()
+# Set max soc at 80%
+v.set_max_soc(80)
+# Set max soc for current charging session to 90%
+v.set_one_off_max_soc(90)
 # Add single departure timer (index, year, month, day, hour, minute)
 v.add_departure_timer(10, 2019, 1, 30, 20, 30)
 # Delete a single departure timer index.
