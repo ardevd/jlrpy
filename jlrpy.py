@@ -288,6 +288,20 @@ class Vehicle(dict):
 
         return self._charging_profile_control("serviceParameters", service_parameters)
 
+    def set_max_soc(self, max_charge_level):
+        """Set max state of charge in percentage"""
+        service_parameters = [{"key": "SET_PERMANENT_MAX_SOC",
+                               "value": max_charge_level}]
+
+        return self._charging_profile_control("serviceParameters", service_parameters)
+
+    def set_one_off_max_soc(self, max_charge_level):
+        """Set one off max state of charge in percentage"""
+        service_parameters = [{"key": "SET_ONE_OFF_MAX_SOC",
+                               "value": max_charge_level}]
+
+        return self._charging_profile_control("serviceParameters", service_parameters)
+
     def add_departure_timer(self, index, year, month, day, hour, minute):
         """Add a single departure timer with the specified index"""
         departure_timer_setting = {"timers": [
