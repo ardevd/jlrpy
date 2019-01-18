@@ -98,14 +98,7 @@ class Connection(object):
             "Content-Type": "application/json",
             "X-Device-Id": self.device_id}
 
-        req = Request(url, headers=auth_headers)
-        # Convert data to json
-        req.data = bytes(json.dumps(data), encoding="utf8")
-
-        opener = build_opener()
-        resp = opener.open(req)
-        charset = resp.info().get('charset', 'utf-8')
-        return json.loads(resp.read().decode(charset))
+        return self.__open(url, auth_headers)
 
     def __register_device(self, headers=None):
         """Register the device Id"""
