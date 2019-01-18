@@ -74,7 +74,11 @@ class Connection(object):
         opener = build_opener()
         resp = opener.open(req)
         charset = resp.info().get('charset', 'utf-8')
-        return json.loads(resp.read().decode(charset))
+        resp_data = resp.read().decode(charset)
+        if resp_data:
+            return json.loads(resp_data)
+        else:
+            return None
 
     def __register_auth(self, auth):
         self.access_token = auth['access_token']
@@ -98,7 +102,7 @@ class Connection(object):
             "Content-Type": "application/json",
             "X-Device-Id": self.device_id}
 
-        return self.__open(url, auth_headers)
+        return self.__open(url, auth_headers, data)
 
     def __register_device(self, headers=None):
         """Register the device Id"""
