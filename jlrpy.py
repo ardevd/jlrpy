@@ -118,14 +118,9 @@ class Connection(object):
         user_login_header = headers.copy()
         user_login_header["Accept"] = "application/vnd.wirelesscar.ngtp.if9.User-v3+json"
 
-        req = Request(url, headers=user_login_header)
-        opener = build_opener()
-        resp = opener.open(req)
-        charset = resp.info().get('charset', 'utf-8')
-        """Register user id"""
-        userdata = json.loads(resp.read().decode(charset))
-        self.user_id = userdata['userId']
-        return userdata
+        user_data = self.__open(url, user_login_header)
+        self.user_id = user_data['userId']
+        return user_data
 
     def get_vehicles(self, headers):
         """Get vehicles for user"""
