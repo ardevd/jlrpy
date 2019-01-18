@@ -125,13 +125,7 @@ class Connection(object):
     def get_vehicles(self, headers):
         """Get vehicles for user"""
         url = "https://jlp-ifoa.wirelesscar.net/if9/jlr/users/%s/vehicles?primaryOnly=true" % self.user_id
-
-        req = Request(url, headers=headers)
-        opener = build_opener()
-        resp = opener.open(req)
-        charset = resp.info().get('charset', 'utf-8')
-
-        return json.loads(resp.read().decode(charset))
+        return self.__open(url, headers)
 
     def get_user_info(self):
         """Get user information"""
