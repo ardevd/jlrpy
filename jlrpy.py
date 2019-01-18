@@ -110,11 +110,7 @@ class Connection(object):
             "deviceID": self.device_id
         }
 
-        req = Request(url, headers=headers)
-        req.data = bytes(json.dumps(data), encoding="utf8")
-        opener = build_opener()
-        resp = opener.open(req)
-        # TODO: Check for response code
+        return self.__open(url, headers, data)
 
     def __login_user(self, headers=None):
         """Login the user"""
@@ -379,7 +375,8 @@ class Vehicle(dict):
         """Enable transport mode or service mode"""
         headers = self.connection.head.copy()
         headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v4+json"
-        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
+        headers[
+            "Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
 
         prov_data = self.authenticate_prov(pin)
 
