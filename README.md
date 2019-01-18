@@ -59,9 +59,9 @@ v.unlock()
 v.charging_start()
 # Stop charging
 v.charging_stop()
-# Set max soc at 80%
+# Set max soc at 80% (Requires upcoming OTA update)
 v.set_max_soc(80)
-# Set max soc for current charging session to 90%
+# Set max soc for current charging session to 90% (Requires upcoming OTA update)
 v.set_one_off_max_soc(90)
 # Add single departure timer (index, year, month, day, hour, minute)
 v.add_departure_timer(10, 2019, 1, 30, 20, 30)
