@@ -74,7 +74,11 @@ class Connection(object):
         opener = build_opener()
         resp = opener.open(req)
         charset = resp.info().get('charset', 'utf-8')
-        return json.loads(resp.read().decode(charset))
+        resp_data = resp.read().decode(charset)
+        if resp_data:
+            return json.loads(resp_data)
+        else:
+            return None
 
     def __register_auth(self, auth):
         self.access_token = auth['access_token']
@@ -98,14 +102,7 @@ class Connection(object):
             "Content-Type": "application/json",
             "X-Device-Id": self.device_id}
 
-        req = Request(url, headers=auth_headers)
-        # Convert data to json
-        req.data = bytes(json.dumps(data), encoding="utf8")
-
-        opener = build_opener()
-        resp = opener.open(req)
-        charset = resp.info().get('charset', 'utf-8')
-        return json.loads(resp.read().decode(charset))
+        return self.__open(url, auth_headers, data)
 
     def __register_device(self, headers=None):
         """Register the device Id"""
@@ -117,11 +114,7 @@ class Connection(object):
             "deviceID": self.device_id
         }
 
-        req = Request(url, headers=headers)
-        req.data = bytes(json.dumps(data), encoding="utf8")
-        opener = build_opener()
-        resp = opener.open(req)
-        # TODO: Check for response code
+        return self.__open(url, headers, data)
 
     def __login_user(self, headers=None):
         """Login the user"""
@@ -129,25 +122,14 @@ class Connection(object):
         user_login_header = headers.copy()
         user_login_header["Accept"] = "application/vnd.wirelesscar.ngtp.if9.User-v3+json"
 
-        req = Request(url, headers=user_login_header)
-        opener = build_opener()
-        resp = opener.open(req)
-        charset = resp.info().get('charset', 'utf-8')
-        """Register user id"""
-        userdata = json.loads(resp.read().decode(charset))
-        self.user_id = userdata['userId']
-        return userdata
+        user_data = self.__open(url, user_login_header)
+        self.user_id = user_data['userId']
+        return user_data
 
     def get_vehicles(self, headers):
         """Get vehicles for user"""
         url = "https://jlp-ifoa.wirelesscar.net/if9/jlr/users/%s/vehicles?primaryOnly=true" % self.user_id
-
-        req = Request(url, headers=headers)
-        opener = build_opener()
-        resp = opener.open(req)
-        charset = resp.info().get('charset', 'utf-8')
-
-        return json.loads(resp.read().decode(charset))
+        return self.__open(url, headers)
 
     def get_user_info(self):
         """Get user information"""
@@ -386,7 +368,8 @@ class Vehicle(dict):
         """Enable transport mode or service mode"""
         headers = self.connection.head.copy()
         headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v4+json"
-        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
+        headers[
+            "Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
 
         prov_data = self.authenticate_prov(pin)
 
