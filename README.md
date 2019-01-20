@@ -35,6 +35,8 @@ v.get_status()
 v.get_subscription_packages()
 # Get trip data (last 1000 trips).
 v.get_trips()
+# Get data for a single trip (specified with trip id)
+v.get_trip(121655021)
 # Get vehicle health status
 v.get_health_status()
 # Get departure timers
