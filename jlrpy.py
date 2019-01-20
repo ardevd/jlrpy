@@ -195,6 +195,10 @@ class Vehicle(dict):
         """Get the last 1000 trips associated with vehicle"""
         return self.get('trips?count=1000', self.connection.head)
 
+    def get_trip(self, trip_id):
+        """Get info on a specific trip"""
+        return self.get('trips/%s/route?pageSize=1000&page=0' % trip_id, self.connection.head)
+
     def get_position(self):
         """Get current vehicle position"""
         return self.get('position', self.connection.head)
