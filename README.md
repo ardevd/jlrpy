@@ -76,6 +76,8 @@ v.enable_service_mode("1234", 1547551847000)
 v.enable_transport_mode("1234", 1547551847000)
 # Add charging period with specified index identifier value.
 v.add_charging_period(1, schedule, 0, 30, 8, 45)
+# Reverse geocode
+c.reverse_geocode(59.915475,10.733054)
 ```
 
 ## Examples
