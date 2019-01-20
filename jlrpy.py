@@ -50,6 +50,7 @@ class Connection(object):
     def post(self, command, url, headers, data=None):
         """POST data to API"""
         now = calendar.timegm(datetime.datetime.now().timetuple())
+        print(url)
         if now > self.expiration:
             # Auth expired, reconnect
             self.connect()
@@ -134,6 +135,12 @@ class Connection(object):
     def get_user_info(self):
         """Get user information"""
         return self.get(self.user_id, "https://jlp-ifoa.wirelesscar.net/if9/jlr/users", self.head)
+
+    def reverse_geocode(self, lat, lon):
+        """Get geocode information"""
+        return self.get("en",
+                        "https://jlp-ifoa.wirelesscar.net/if9/jlr/geocode/reverse/{0:f}/{0:f}".format(lat, lon),
+                        self.head)
 
 
 class Vehicle(dict):
