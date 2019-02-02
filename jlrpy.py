@@ -369,14 +369,22 @@ class Vehicle(dict):
 
     def enable_service_mode(self, pin, expiration_time):
         """Enable service mode. Will disable at the specified time (epoch millis)"""
-        self._disable_theft_alarm(pin, expiration_time, "protectionStrategy_serviceMode")
+        self._prov_command(pin, expiration_time, "protectionStrategy_serviceMode")
 
     def enable_transport_mode(self, pin, expiration_time):
         """Enable transport mode. Will be disabled at the specified time (epoch millis)"""
-        self._disable_theft_alarm(pin, expiration_time, "protectionStrategy_transportMode")
+        self._prov_command(pin, expiration_time, "protectionStrategy_transportMode")
 
-    def _disable_theft_alarm(self, pin, expiration_time, mode):
-        """Enable transport mode or service mode"""
+    def enable_privacy_mode(self, pin):
+        """Enable privacy mode. Will disable journey logging"""
+        self._prov_command(pin, None, "privacySwitch_on")
+
+    def disable_privacy_mode(self, pin):
+        """Disable privacy mode. Will enable journey logging"""
+        self._prov_command(pin, None, "privacySwitch_off")
+
+    def _prov_command(self, pin, expiration_time, mode):
+        """Send prov endpoint commands. Used for service/transport/privacy mode"""
         headers = self.connection.head.copy()
         headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v4+json"
         headers[
