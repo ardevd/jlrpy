@@ -76,6 +76,10 @@ v.set_wakeup_time(1547845200000)
 v.enable_service_mode("1234", 1547551847000)
 # Enable transport mode (requires personal PIN)
 v.enable_transport_mode("1234", 1547551847000)
+# Enable privacy mode
+v.enable_privacy_mode("1234")
+# Disable privacy mode
+v.disable_privacy_mode("1234")
 # Add charging period with specified index identifier value.
 v.add_charging_period(1, schedule, 0, 30, 8, 45)
 # Reverse geocode
