@@ -81,6 +81,8 @@ schedule = {"friday":false,"monday":true,"saturday":false,"sunday":false,"thursd
 v.add_repeated_departure_timer(10, 20, 30, schedule)
 # Set wakeup timer (epoch millis)
 v.set_wakeup_time(1547845200000)
+# Cancel wakeup timer
+v.delete_wakeup_time()
 # Enable service mode (requires personal PIN)
 v.enable_service_mode("1234", 1547551847000)
 # Enable transport mode (requires personal PIN)
