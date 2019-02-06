@@ -364,7 +364,7 @@ class Vehicle(dict):
     def delete_wakeup_time(self):
         """Stop the wakeup time"""
         swu_data = self.authenticate_swu()
-        swu_data["serviceCommand"] = "STOP"
+        swu_data["serviceCommand"] = "END"
         self._swu(swu_data)
 
     def _swu(self, swu_data):
