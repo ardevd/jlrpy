@@ -8,6 +8,16 @@ import json
 import datetime
 import calendar
 import uuid
+import sys
+import logging
+
+logger = logging.getLogger('jply')
+logger.setLevel(logging.INFO)
+
+ch = logging.StreamHandler(sys.stdout)
+ch.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s — %(message)s"))
+logger.addHandler(ch)
+logger.propagate = False
 
 
 class Connection(object):
@@ -41,7 +51,7 @@ class Connection(object):
             for v in self.get_vehicles(self.head)['vehicles']:
                 self.vehicles.append(Vehicle(v, self))
         except TypeError:
-            print("[-] No vehicles associated with this account")
+            logger.error("No vehicles associated with this account")
 
     def get(self, command, url, headers):
         """GET data from API"""
@@ -50,22 +60,22 @@ class Connection(object):
     def post(self, command, url, headers, data=None):
         """POST data to API"""
         now = calendar.timegm(datetime.datetime.now().timetuple())
-        print(url)
+        logger.debug(url)
         if now > self.expiration:
             # Auth expired, reconnect
             self.connect()
         return self.__open("%s/%s" % (url, command), headers=headers, data=data)
 
     def connect(self):
-        print("[*] Connecting...")
+        logger.info("Connecting...")
         auth = self.__authenticate(data=self.oauth)
         self.__register_auth(auth)
-        print("[*] 1/3 authenticated")
+        logger.info("1/3 authenticated")
         self.__set_header(auth['access_token'])
         self.__register_device(self.head)
-        print("[*] 2/3 device id registered")
+        logger.info("2/3 device id registered")
         self.__login_user(self.head)
-        print("[*] 3/3 user logged in, user id retrieved")
+        logger.info("3/3 user logged in, user id retrieved")
 
     def __open(self, url, headers=None, data=None):
         req = Request(url, headers=headers)
