@@ -220,6 +220,12 @@ class Vehicle(dict):
         """Get current vehicle position"""
         return self.get('position', self.connection.head)
 
+    def set_attributes(self, nickname, registration_number):
+        """Set vehicle nickname and registration number"""
+        attributes_data = {"nickname": nickname,
+                           "registrationNumber": registration_number}
+        return self.post("attributes", self.connection.head, attributes_data)
+
     def lock(self, pin):
         """Lock vehicle. Requires personal PIN for authentication"""
         headers = self.connection.head.copy()
