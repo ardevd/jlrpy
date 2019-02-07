@@ -60,6 +60,8 @@ v.get_position()
 v.preconditioning_start("210")
 # Stop preconditioning
 v.preconditioning_stop()
+# Set vehicle nickname and registration number
+v.set_attributes("Name", "reg-number")
 # Lock vehicle
 v.lock()
 # Unlock vehicle
