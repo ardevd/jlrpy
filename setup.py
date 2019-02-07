@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="jlrpy",
-    version="1.0.18",
+    version="1.1.0",
     author="Edvard Holst",
     author_email="edvard.holst@gmail.com",
     description="Communicate and control your Jaguar I-Pace",
