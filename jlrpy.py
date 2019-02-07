@@ -146,6 +146,12 @@ class Connection(object):
         """Get user information"""
         return self.get(self.user_id, "https://jlp-ifoa.wirelesscar.net/if9/jlr/users", self.head)
 
+    def update_user_info(self, user_info_data):
+        """Update user information"""
+        headers = self.head.copy()
+        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.User-v3+json; charset=utf-8"
+        return self.post(self.user_id, "https://jlp-ifoa.wirelesscar.net/if9/jlr/users", headers, user_info_data)
+
     def reverse_geocode(self, lat, lon):
         """Get geocode information"""
         return self.get("en",

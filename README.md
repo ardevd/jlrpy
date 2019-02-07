@@ -36,6 +36,10 @@ v = c.vehicles[0]
 ```python
 # Get user information
 c.get_user_info()
+# Update user information.
+p = c.get_user_info()
+p['contact']['userPreferences']['unitsOfMeasurement'] = "Km Litre Celsius VolPerDist Wh DistPerkWh"
+c.update_user_info(p)
 # Get attributes associated with vehicle
 v.get_attributes()
 # Get current status of vehicle
