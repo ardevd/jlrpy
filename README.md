@@ -70,6 +70,8 @@ v.set_attributes("Name", "reg-number")
 v.lock()
 # Unlock vehicle
 v.unlock()
+# Reset alarm
+v.reset_alarm("1234") # 1234 being the personal PIN
 # Start charging
 v.charging_start()
 # Stop charging
