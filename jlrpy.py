@@ -248,12 +248,20 @@ class Vehicle(dict):
 
         return self.post("unlock", headers, rdu_data)
 
+    def reset_alarm(self, pin):
+        """Reset vehicle alarm"""
+        headers = self.connection.head.copy()
+        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
+        headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v4+json"
+        aloff_data = self.authenticate_aloff(pin)
+
+        return self.post("unlock", headers, aloff_data)
+
     def honk_blink(self):
         """Sound the horn and blink lights"""
         headers = self.connection.head.copy()
         headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v4+json"
-        headers[
-            "Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
+        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
 
         hblf_data = self.authenticate_hblf()
         return self.post("honkBlink", headers, hblf_data)
@@ -474,6 +482,10 @@ class Vehicle(dict):
     def authenticate_rdu(self, pin):
         """Authenticate to rdu"""
         return self._authenticate_pin_protected_service(pin, "RDU")
+
+    def authenticate_aloff(self, pin):
+        """Authenticate to aloff"""
+        return self._authenticate_pin_protected_service(pin, "ALOFF")
 
     def authenticate_prov(self, pin):
         """Authenticate to PROV service"""
