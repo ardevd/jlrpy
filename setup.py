@@ -6,10 +6,10 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="jlrpy",
-    version="1.1.0",
+    version="1.1.1",
     author="Edvard Holst",
     author_email="edvard.holst@gmail.com",
-    description="Communicate and control your Jaguar I-Pace",
+    description="Control your Jaguar I-Pace",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/ardevd/jlrpy",
@@ -23,5 +23,6 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
         "Intended Audience :: Developers",
+        "Development Status :: 5 - Production/Stable",
     ],
 )
