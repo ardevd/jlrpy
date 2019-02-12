@@ -216,6 +216,8 @@ class Vehicle(dict):
 
     def get_trips(self):
         """Get the last 1000 trips associated with vehicle"""
+        headers = self.connection.head.copy()
+        headers["Accept"] = "application/vnd.ngtp.org.triplist-v2+json"
         return self.get('trips?count=1000', self.connection.head)
 
     def get_trip(self, trip_id):
