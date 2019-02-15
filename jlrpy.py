@@ -15,7 +15,7 @@ logger = logging.getLogger('jply')
 logger.setLevel(logging.INFO)
 
 ch = logging.StreamHandler(sys.stdout)
-ch.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s — %(message)s"))
+ch.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
 logger.addHandler(ch)
 logger.propagate = False
 
