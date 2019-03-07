@@ -44,6 +44,8 @@ c.update_user_info(p)
 v.get_attributes()
 # Get current status of vehicle
 v.get_status()
+# Optionally, you can also specify a status value key
+v.get_status("EV_STATE_OF_CHARGE")
 # Get subscription packes
 v.get_subscription_packages()
 # Get trip data (last 1000 trips).
