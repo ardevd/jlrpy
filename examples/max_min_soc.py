@@ -15,6 +15,7 @@ import threading
 
 max_soc = 80  # SET MAX SOC LEVEL HERE (percentage)
 min_soc = 20  # SET MIN SOC LEVEL HERE
+interval = 300.0  # SET INTERVAL (IN SECONDS) HERE.
 
 
 def check_soc():
@@ -22,13 +23,12 @@ def check_soc():
     current charging level matches or exceeds specified max/min level and
     the vehicle is currently charging.
     """
-    threading.Timer(60.0, check_soc).start()  # Called every minute
+    threading.Timer(interval, check_soc).start()  # Called every minute
 
-    status = v.get_status()['vehicleStatus']
     # Get current soc
-    current_soc = int(status[38].get('value'))
+    current_soc = v.get_status("EV_STATE_OF_CHARGE")
     # Get current charging state
-    charging_state = status[44]
+    charging_state = v.get_status("EV_CHARGING_STATUS")
     if current_soc >= max_soc and charging_state is "CHARGING":
         # Stop charging if we are currently charging
         v.charging_stop()
