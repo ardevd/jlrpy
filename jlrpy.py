@@ -179,11 +179,15 @@ class Vehicle(dict):
         result = self.get('attributes', headers)
         return result
 
-    def get_status(self):
+    def get_status(self, key=None):
         """Get vehicle status"""
         headers = self.connection.head.copy()
         headers["Accept"] = "application/vnd.ngtp.org.if9.healthstatus-v2+json"
         result = self.get('status', headers)
+
+        if key:
+            return {d['key']: d['value'] for d in result['vehicleStatus']}[key]
+            
         return result
 
     def get_health_status(self):
