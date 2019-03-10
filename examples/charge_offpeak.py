@@ -14,31 +14,78 @@ Todo: figure out whether the car is plugged in at home or somewhere else.
 import jlrpy
 import threading
 import datetime
+import math
 from datetime import date
 import os
+import configparser
 
-max_soc = 80  # SET MAX SOC LEVEL HERE (percentage)
 
 # login info (email and password) are read from $HOME/.jlrpy.cfg
 # which contains a single line with email and password separated by ':'
 # email@example.com:PassW0rd
 # passwords containing a ':' are not allowed
-passwordfile = os.environ['HOME']+"/.jlrpy.cfg"
 
 logger = jlrpy.logger
 
+def distance(origin, destination):
+    """
+    From https://stackoverflow.com/questions/19412462
+
+    Calculate the Haversine distance.
+
+    Parameters
+    ----------
+    origin : tuple of float
+        (lat, long)
+    destination : tuple of float
+        (lat, long)
+
+    Returns
+    -------
+    distance_in_km : float
+
+    Examples
+    --------
+    >>> origin = (48.1372, 11.5756)  # Munich
+    >>> destination = (52.5186, 13.4083)  # Berlin
+    >>> round(distance(origin, destination), 1)
+    504.2
+    """
+    lat1, lon1 = origin
+    lat2, lon2 = destination
+    radius = 6371  # km
+
+    dlat = math.radians(lat2 - lat1)
+    dlon = math.radians(lon2 - lon1)
+    a = (math.sin(dlat / 2) * math.sin(dlat / 2) +
+         math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) *
+         math.sin(dlon / 2) * math.sin(dlon / 2))
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+    d = radius * c
+
+    return d
+
+
+
 def check_soc():
     """Retrieve vehicle status and stop or start charging if
-    current charging level matches or exceeds specified max/min level and
+    current charging level matches or exceeds specified max level and
     the vehicle is currently charging.
     """
     threading.Timer(60.0, check_soc).start()  # Called every minute
 
+    p = v.get_position()
+    position = (p['position']['latitude'], p['position']['longitude'])
+    d = int(1000*distance(home,position))
+    if (d > 100):
+        logger.info("car is "+str(d)+"m from home")
+        return
+
     t = datetime.datetime.now()
     # offpeak: M-F (0-4) 0:00- 7:00, 23:00-23:59
     #          S-S (5-6) 0:00-15:00, 19:00-23:59 
-    offpeak = ((date.weekday(t) <  5 and (t.hour <  7 or t.hour >= 23)) or
-               (date.weekday(t) >= 5 and (t.hour < 15 or t.hour >= 19)))
+    today = date.weekday(t)
+    offpeak = ( (t.hour <  peak[today][0] or t.hour >= peak[today][1]))
 
     # getting health status forces a status update
     healthstatus = v.get_health_status()
@@ -67,11 +114,21 @@ def check_soc():
     else:
         logger.info("car is not plugged in")
 
-file = open(passwordfile, "r")
-line = file.readline()
-s = line.strip().split(":")
-username = s[0]
-password = s[1]
+config = configparser.ConfigParser()
+configfile = os.environ['HOME']+"/.jlrpy.ini"
+config.read(configfile)
+username = config['jlrpy']['email']
+password = config['jlrpy']['password']
+home = (float(config['jlrpy']['home_latitude']), float(config['jlrpy']['home_longitude']))
+max_soc = int(config['jlrpy']['max_soc'])
+
+peak = [ [int(config['jlrpy']['peak_start_mon']),int(config['jlrpy']['peak_end_mon'])],
+         [int(config['jlrpy']['peak_start_tue']),int(config['jlrpy']['peak_end_tue'])],
+         [int(config['jlrpy']['peak_start_wed']),int(config['jlrpy']['peak_end_wed'])],
+         [int(config['jlrpy']['peak_start_thu']),int(config['jlrpy']['peak_end_thu'])],
+         [int(config['jlrpy']['peak_start_fri']),int(config['jlrpy']['peak_end_fri'])],
+         [int(config['jlrpy']['peak_start_sat']),int(config['jlrpy']['peak_end_sat'])],
+         [int(config['jlrpy']['peak_start_sun']),int(config['jlrpy']['peak_end_sun'])]]
 
 c = jlrpy.Connection(username, password)
 v = c.vehicles[0]
