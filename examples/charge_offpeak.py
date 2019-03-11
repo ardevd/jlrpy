@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
-"""Max SOC script.
+"""Charge Off-Peak script.
 
 This script will check the charging level once every minute
-and if the current battery level meets or exceeds the specified
-maximum value, the charging will stop if the vehicle is currently charging.
+if the vehicle is at home (100 meters or less from the location
+specified in the config file) and if the current battery level 
+meets or exceeds the specified maximum value, the charging will
+stop if the vehicle is currently charging.
 
 If the vehicle is charging during off-peak hours, the charging will stop.
-
-Todo: figure out whether the car is plugged in at home or somewhere else.
 
 """
 
