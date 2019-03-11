@@ -112,3 +112,6 @@ The examples directory contains example scripts that put jlrpy to good use.
 
 ### max_min_soc.py
 The `max_min_soc.py` script allows you to specify a desired maximum and minimum state of charge for the vehicle. Charging will be stopped once the maximum state of charge is reached and it will be started if the minimum state of charge is reached. 
+
+### charge_offpeak.py
+The `charge_offpeak.py` script allows you to specify a desired (off-peak) charging time period and maximum state of charge for the vehicle. Charging will be stopped if the vehicle is charging outside of the specified time period or once the maximum state of charge is reached and it will be started during the specified time period if the state of charge is below the maximum.
