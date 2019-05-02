@@ -107,7 +107,7 @@ class Connection(object):
 
     def __authenticate(self, data=None):
         """Raw urlopen command to the auth url"""
-        url = "https://jlp-ifas.wirelesscar.net/ifas/jlr/tokens"
+        url = "https://ifas.prod-row.jlrmotor.com/ifas/jlr/tokens"
         auth_headers = {
             "Authorization": "Basic YXM6YXNwYXNz",
             "Content-Type": "application/json",
@@ -117,7 +117,7 @@ class Connection(object):
 
     def __register_device(self, headers=None):
         """Register the device Id"""
-        url = "https://jlp-ifop.wirelesscar.net/ifop/jlr/users/%s/clients" % self.email
+        url = "https://ifop.prod-row.jlrmotor.com/ifop/jlr/users/%s/clients" % self.email
         data = {
             "access_token": self.access_token,
             "authorization_token": self.auth_token,
@@ -129,7 +129,7 @@ class Connection(object):
 
     def __login_user(self, headers=None):
         """Login the user"""
-        url = "https://jlp-ifoa.wirelesscar.net/if9/jlr/users?loginName=%s" % self.email
+        url = "https://if9.prod-row.jlrmotor.com/if9/jlr/users?loginName=%s" % self.email
         user_login_header = headers.copy()
         user_login_header["Accept"] = "application/vnd.wirelesscar.ngtp.if9.User-v3+json"
 
@@ -139,23 +139,23 @@ class Connection(object):
 
     def get_vehicles(self, headers):
         """Get vehicles for user"""
-        url = "https://jlp-ifoa.wirelesscar.net/if9/jlr/users/%s/vehicles?primaryOnly=true" % self.user_id
+        url = "https://if9.prod-row.jlrmotor.com/if9/jlr/users/%s/vehicles?primaryOnly=true" % self.user_id
         return self.__open(url, headers)
 
     def get_user_info(self):
         """Get user information"""
-        return self.get(self.user_id, "https://jlp-ifoa.wirelesscar.net/if9/jlr/users", self.head)
+        return self.get(self.user_id, "https://if9.prod-row.jlrmotor.com/if9/jlr/users", self.head)
 
     def update_user_info(self, user_info_data):
         """Update user information"""
         headers = self.head.copy()
         headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.User-v3+json; charset=utf-8"
-        return self.post(self.user_id, "https://jlp-ifoa.wirelesscar.net/if9/jlr/users", headers, user_info_data)
+        return self.post(self.user_id, "https://if9.prod-row.jlrmotor.com/if9/jlr/users", headers, user_info_data)
 
     def reverse_geocode(self, lat, lon):
         """Get geocode information"""
         return self.get("en",
-                        "https://jlp-ifoa.wirelesscar.net/if9/jlr/geocode/reverse/{0:f}/{0:f}".format(lat, lon),
+                        "https://if9.prod-row.jlrmotor.com/if9/jlr/geocode/reverse/{0:f}/{0:f}".format(lat, lon),
                         self.head)
 
 
@@ -187,7 +187,7 @@ class Vehicle(dict):
 
         if key:
             return {d['key']: d['value'] for d in result['vehicleStatus']}[key]
-            
+
         return result
 
     def get_health_status(self):
@@ -257,7 +257,8 @@ class Vehicle(dict):
     def reset_alarm(self, pin):
         """Reset vehicle alarm"""
         headers = self.connection.head.copy()
-        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
+        headers[
+            "Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
         headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v4+json"
         aloff_data = self.authenticate_aloff(pin)
 
@@ -267,7 +268,8 @@ class Vehicle(dict):
         """Sound the horn and blink lights"""
         headers = self.connection.head.copy()
         headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v4+json"
-        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
+        headers[
+            "Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
 
         hblf_data = self.authenticate_hblf()
         return self.post("honkBlink", headers, hblf_data)
@@ -407,7 +409,8 @@ class Vehicle(dict):
         """Set the wakeup time for the specified time (epoch milliseconds)"""
         headers = self.connection.head.copy()
         headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v3+json"
-        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
+        headers[
+            "Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
 
         return self.post("swu", headers, swu_data)
 
@@ -509,9 +512,9 @@ class Vehicle(dict):
 
     def post(self, command, headers, data):
         """Utility command to post data to VHS"""
-        return self.connection.post(command, 'https://jlp-ifoa.wirelesscar.net/if9/jlr/vehicles/%s' % self.vin,
+        return self.connection.post(command, 'https://if9.prod-row.jlrmotor.com/if9/jlr/vehicles/%s' % self.vin,
                                     headers, data)
 
     def get(self, command, headers):
         """Utility command to get vehicle data from API"""
-        return self.connection.get(command, 'https://jlp-ifoa.wirelesscar.net/if9/jlr/vehicles/%s' % self.vin, headers)
+        return self.connection.get(command, 'https://if9.prod-row.jlrmotor.com/if9/jlr/vehicles/%s' % self.vin, headers)
