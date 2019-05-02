@@ -159,7 +159,7 @@ class Connection(object):
     def reverse_geocode(self, lat, lon):
         """Get geocode information"""
         return self.get("en",
-                        "https://if9.prod-row.jlrmotor.com/if9/jlr/geocode/reverse/{0:f}/{0:f}".format(lat, lon),
+                        "%s/geocode/reverse/{0:f}/{0:f}".format(lat, lon) % IF9_BASE_URL,
                         self.head)
 
 
