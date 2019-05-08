@@ -7,9 +7,6 @@ Python 3 library for interacting with the JLR Remote car API.
 ## Documentation
 The associated API documentation for the JLR InControl API is a good read for anyone wanting to make use of this project. It's currently available [here](https://documenter.getpostman.com/view/6250319/RznBMzqo)
 
-## Help Needed
-As I currently do not own a vehicle yet the work represented here is the result of static analysis. If anyone with a vehicle is willing to help me reverse the protocol further, please let me know on Gitter. Also, be sure to check out any available pull requests and test out the described functionality there. 
-
 ## Installation
 
 Either check out this repository directly or install through pip (for Python3).
