@@ -63,11 +63,11 @@ v.preconditioning_stop()
 # Set vehicle nickname and registration number
 v.set_attributes("Name", "reg-number")
 # Lock vehicle
-v.lock()
+v.lock(pin) # pin being the personal master pin
 # Unlock vehicle
-v.unlock()
+v.unlock(pin)
 # Reset alarm
-v.reset_alarm("1234") # 1234 being the personal PIN
+v.reset_alarm(pin)
 # Start charging
 v.charging_start()
 # Stop charging
