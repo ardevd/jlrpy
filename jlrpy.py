@@ -141,6 +141,16 @@ class Connection(object):
         self.user_id = user_data['userId']
         return user_data
 
+    def refresh_tokens(self):
+        """Refresh tokens."""
+        refresh_oauth = {
+            "grant_type": "refresh_token",
+            "refresh_token": self.refresh_token}
+
+        auth_data = self.__authenticate(refresh_oauth)
+        self.__register_auth(auth_data)
+        logger.info("[+] Tokens refreshed")
+
     def get_vehicles(self, headers):
         """Get vehicles for user"""
         url = "%s/users/%s/vehicles?primaryOnly=true" % (IF9_BASE_URL, self.user_id)
