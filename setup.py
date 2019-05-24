@@ -14,10 +14,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/ardevd/jlrpy",
     py_modules=['jlrpy'],
-    install_requires=[
-        'uuid',
-        'datetime',
-    ],
+    install_requires=[],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
