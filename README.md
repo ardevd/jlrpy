@@ -16,13 +16,18 @@ Either check out this repository directly or install through pip (for Python3).
 ## Usage
 To get started, instantiate a `Connection` object and pass along the email address and password associated with your Jaguar InControl account.
 
+There are two ways to authenticate to InControl. Using the user name and password or with a valid refresh token.
+
 The JLR API requires a device ID to be registered (UUID4 formatted). If you do not specify one when instantiating the `Connection` object it will generate a new one for your automatically. 
 
 ```python
 import jlrpy
-
+# Authenticate using the username and password
 c = jlrpy.Connection('my@email.com', 'password')
 v = c.vehicles[0]
+
+# Authenticate using a refresh token (username must still be specified)
+c = jlrpy.Connection(email='my@email.com', refresh_token='124c3f21-42ds-2e4d-86f8-221v32392a1d')
 ```
 
 `Connection.vehicles` will list all vehicles assosiated with your account.
@@ -34,6 +39,8 @@ c.get_user_info()
 p = c.get_user_info()
 p['contact']['userPreferences']['unitsOfMeasurement'] = "Km Litre Celsius VolPerDist Wh DistPerkWh"
 c.update_user_info(p)
+# Refresh access token
+c.refresh_tokens()
 # Get attributes associated with vehicle
 v.get_attributes()
 # Get current status of vehicle

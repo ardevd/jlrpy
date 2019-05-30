@@ -30,10 +30,13 @@ class Connection(object):
     def __init__(self,
                  email='',
                  password='',
-                 device_id='', ):
+                 device_id='',
+                 refresh_token=''):
         """Init the connection object
 
         The email address and password associated with your Jaguar InControl account is required.
+        A device Id can optionally be specified. If not one will be generated at runtime.
+        A refresh token can be supplied for authentication instead of a password
         """
         self.email = email
 
@@ -42,10 +45,16 @@ class Connection(object):
         else:
             self.device_id = str(uuid.uuid4())
 
-        self.oauth = {
-            "grant_type": "password",
-            "username": email,
-            "password": password}
+        if refresh_token:
+            self.oauth = {
+                "grant_type": "refresh_token",
+                "refresh_token": refresh_token}
+        else:
+            self.oauth = {
+                "grant_type": "password",
+                "username": email,
+                "password": password}
+
         self.expiration = 0  # force credential refresh
 
         self.connect()
@@ -74,12 +83,15 @@ class Connection(object):
         logger.info("Connecting...")
         auth = self.__authenticate(data=self.oauth)
         self.__register_auth(auth)
-        logger.info("1/3 authenticated")
         self.__set_header(auth['access_token'])
+        logger.info("[+] authenticated")
+        self.__register_device_and_log_in()
+
+    def __register_device_and_log_in(self):
         self.__register_device(self.head)
-        logger.info("2/3 device id registered")
+        logger.info("1/2 device id registered")
         self.__login_user(self.head)
-        logger.info("3/3 user logged in, user id retrieved")
+        logger.info("2/2 user logged in, user id retrieved")
 
     def __open(self, url, headers=None, data=None):
         req = Request(url, headers=headers)
@@ -143,13 +155,15 @@ class Connection(object):
 
     def refresh_tokens(self):
         """Refresh tokens."""
-        refresh_oauth = {
+        self.oauth = {
             "grant_type": "refresh_token",
             "refresh_token": self.refresh_token}
 
-        auth_data = self.__authenticate(refresh_oauth)
-        self.__register_auth(auth_data)
+        auth = self.__authenticate(self.oauth)
+        self.__register_auth(auth)
+        self.__set_header(auth['access_token'])
         logger.info("[+] Tokens refreshed")
+        self.__register_device_and_log_in()
 
     def get_vehicles(self, headers):
         """Get vehicles for user"""
@@ -270,8 +284,7 @@ class Vehicle(dict):
     def reset_alarm(self, pin):
         """Reset vehicle alarm"""
         headers = self.connection.head.copy()
-        headers[
-            "Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
+        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
         headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v4+json"
         aloff_data = self.authenticate_aloff(pin)
 
