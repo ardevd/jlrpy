@@ -222,8 +222,7 @@ class Vehicle(dict):
         """Get vehicle health status"""
         headers = self.connection.head.copy()
         headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v4+json"
-        headers[
-            "Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
+        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
 
         vhs_data = self._authenticate_vhs()
 
@@ -285,8 +284,7 @@ class Vehicle(dict):
     def reset_alarm(self, pin):
         """Reset vehicle alarm"""
         headers = self.connection.head.copy()
-        headers[
-            "Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
+        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
         headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v4+json"
         aloff_data = self.authenticate_aloff(pin)
 
@@ -296,8 +294,7 @@ class Vehicle(dict):
         """Sound the horn and blink lights"""
         headers = self.connection.head.copy()
         headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v4+json"
-        headers[
-            "Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
+        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
 
         hblf_data = self.authenticate_hblf()
         return self.post("honkBlink", headers, hblf_data)
@@ -437,8 +434,7 @@ class Vehicle(dict):
         """Set the wakeup time for the specified time (epoch milliseconds)"""
         headers = self.connection.head.copy()
         headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v3+json"
-        headers[
-            "Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
+        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
 
         return self.post("swu", headers, swu_data)
 
@@ -462,8 +458,7 @@ class Vehicle(dict):
         """Send prov endpoint commands. Used for service/transport/privacy mode"""
         headers = self.connection.head.copy()
         headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v4+json"
-        headers[
-            "Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
+        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
 
         prov_data = self.authenticate_prov(pin)
 
