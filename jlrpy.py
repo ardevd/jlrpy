@@ -259,6 +259,12 @@ class Vehicle(dict):
         """Get current vehicle position"""
         return self.get('position', self.connection.head)
 
+    def get_service_status(self, service_id):
+        """Get service status"""
+        headers = self.connection.head.copy()
+        headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v4+json"
+        return self.get('services/%s' % service_id, headers)
+
     def set_attributes(self, nickname, registration_number):
         """Set vehicle nickname and registration number"""
         attributes_data = {"nickname": nickname,
