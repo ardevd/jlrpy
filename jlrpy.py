@@ -428,20 +428,19 @@ class Vehicle(dict):
         swu_data = self.authenticate_swu()
         swu_data["serviceCommand"] = "START"
         swu_data["startTime"] = wakeup_time
-        self._swu(swu_data)
+        return self._swu(swu_data)
 
     def delete_wakeup_time(self):
         """Stop the wakeup time"""
         swu_data = self.authenticate_swu()
         swu_data["serviceCommand"] = "END"
-        self._swu(swu_data)
+        return self._swu(swu_data)
 
     def _swu(self, swu_data):
         """Set the wakeup time for the specified time (epoch milliseconds)"""
         headers = self.connection.head.copy()
         headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v3+json"
         headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
-
         return self.post("swu", headers, swu_data)
 
     def enable_service_mode(self, pin, expiration_time):
