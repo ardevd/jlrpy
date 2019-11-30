@@ -445,19 +445,19 @@ class Vehicle(dict):
 
     def enable_service_mode(self, pin, expiration_time):
         """Enable service mode. Will disable at the specified time (epoch millis)"""
-        self._prov_command(pin, expiration_time, "protectionStrategy_serviceMode")
+        return self._prov_command(pin, expiration_time, "protectionStrategy_serviceMode")
 
     def enable_transport_mode(self, pin, expiration_time):
         """Enable transport mode. Will be disabled at the specified time (epoch millis)"""
-        self._prov_command(pin, expiration_time, "protectionStrategy_transportMode")
+        return self._prov_command(pin, expiration_time, "protectionStrategy_transportMode")
 
     def enable_privacy_mode(self, pin):
         """Enable privacy mode. Will disable journey logging"""
-        self._prov_command(pin, None, "privacySwitch_on")
+        return self._prov_command(pin, None, "privacySwitch_on")
 
     def disable_privacy_mode(self, pin):
         """Disable privacy mode. Will enable journey logging"""
-        self._prov_command(pin, None, "privacySwitch_off")
+        return self._prov_command(pin, None, "privacySwitch_off")
 
     def _prov_command(self, pin, expiration_time, mode):
         """Send prov endpoint commands. Used for service/transport/privacy mode"""
