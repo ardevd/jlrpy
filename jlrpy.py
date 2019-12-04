@@ -265,6 +265,11 @@ class Vehicle(dict):
         headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v4+json"
         return self.get('services/%s' % service_id, headers)
 
+    def get_rcc_target_value(self):
+        """Get Remote Climate Target Value"""
+        headers = self.connection.head.copy()
+        return self.get('settings/ClimateControlRccTargetTemp', headers)
+
     def set_attributes(self, nickname, registration_number):
         """Set vehicle nickname and registration number"""
         attributes_data = {"nickname": nickname,
@@ -305,12 +310,39 @@ class Vehicle(dict):
         hblf_data = self.authenticate_hblf()
         return self.post("honkBlink", headers, hblf_data)
 
+    def remote_engine_start(self, pin, target_value):
+        """Start Remote Engine preconditioning"""
+        headers = self.connection.head.copy()
+        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v2+json"
+        self.set_rcc_target_value(pin, target_value)
+        reon_data = self.authenticate_reon(pin)
+
+        return self.post("engineOn", headers, reon_data)
+
+    def remote_engine_stop(self, pin):
+        """Stop Remote Engine preconditioning"""
+        headers = self.connection.head.copy()
+        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v2+json"
+        reoff_data = self.authenticate_reoff(pin)
+
+        return self.post("engineOff", headers, reoff_data)
+
+    def set_rcc_target_value(self, pin, target_value):
+        """Set Remote Climate Target Value (value between 31-57, 31 is LO 57 is HOT)"""
+        headers = self.connection.head.copy()
+        self.enable_provisioning_mode(pin)
+        service_parameters = {"key": "ClimateControlRccTargetTemp",
+                               "value": "%s" % str(target_value),
+                               "applied": 1}
+        self.post("settings", headers, service_parameters)
+
     def preconditioning_start(self, target_temp):
         """Start pre-conditioning for specified temperature (celsius)"""
         service_parameters = [{"key": "PRECONDITIONING",
                                "value": "START"},
                               {"key": "TARGET_TEMPERATURE_CELSIUS",
                                "value": "%s" % target_temp}]
+
         return self._preconditioning_control(service_parameters)
 
     def preconditioning_stop(self):
@@ -443,6 +475,10 @@ class Vehicle(dict):
         headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
         return self.post("swu", headers, swu_data)
 
+    def enable_provisioning_mode(self, pin):
+        """Enable provisioning mode """
+        self._prov_command(pin, None, "provisioning")
+
     def enable_service_mode(self, pin, expiration_time):
         """Enable service mode. Will disable at the specified time (epoch millis)"""
         return self._prov_command(pin, expiration_time, "protectionStrategy_serviceMode")
@@ -523,6 +559,14 @@ class Vehicle(dict):
     def authenticate_aloff(self, pin):
         """Authenticate to aloff"""
         return self._authenticate_pin_protected_service(pin, "ALOFF")
+
+    def authenticate_reon(self, pin):
+        """Authenticate to reon"""
+        return self._authenticate_pin_protected_service(pin, "REON")
+
+    def authenticate_reoff(self, pin):
+        """Authenticate to reoff"""
+        return self._authenticate_pin_protected_service(pin, "REOFF")
 
     def authenticate_prov(self, pin):
         """Authenticate to PROV service"""
