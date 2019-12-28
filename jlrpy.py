@@ -361,7 +361,7 @@ class Vehicle(dict):
         """Control the climate preconditioning"""
         headers = self.connection.head.copy()
         headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v5+json"
-        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.PhevService-v1+json; charset=utf"
+        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.PhevService-v1+json; charset=utf-8"
 
         ecc_data = self.authenticate_ecc()
         ecc_data['serviceParameters'] = service_parameters
