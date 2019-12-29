@@ -265,6 +265,11 @@ class Vehicle(dict):
         headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v4+json"
         return self.get('services/%s' % service_id, headers)
 
+    def get_services(self):
+        """Get active services"""
+        headers = self.connection.head.copy()
+        return self.get("services", headers)
+
     def get_rcc_target_value(self):
         """Get Remote Climate Target Value"""
         headers = self.connection.head.copy()

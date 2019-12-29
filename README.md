@@ -45,6 +45,8 @@ c.refresh_tokens()
 v.get_attributes()
 # Get current status of vehicle
 v.get_status()
+# Get current active services
+v.get_services()
 # Optionally, you can also specify a status value key
 v.get_status("EV_STATE_OF_CHARGE")
 # Get subscription packes
