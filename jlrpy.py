@@ -503,9 +503,7 @@ class Vehicle(dict):
     def _prov_command(self, pin, expiration_time, mode):
         """Send prov endpoint commands. Used for service/transport/privacy mode"""
         headers = self.connection.head.copy()
-        headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v4+json"
-        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8"
-
+        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json"
         prov_data = self.authenticate_prov(pin)
 
         prov_data["serviceCommand"] = mode
