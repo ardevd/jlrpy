@@ -251,6 +251,38 @@ class Vehicle(dict):
         headers["Accept"] = "application/vnd.ngtp.org.triplist-v2+json"
         return self.get('trips?count=%d' % count, headers)
 
+    def get_guardian_mode_alarms(self):
+        """Get Guardian Mode Alarms"""
+        headers = self.connection.head.copy()
+        headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.GuardianStatus-v1+json"
+        headers["Accept-Encoding"] = "gzip,deflate"
+        return self.get('gm/alarms', headers)
+
+    def get_guardian_mode_alerts(self):
+        """Get Guardian Mode Alerts"""
+        headers = self.connection.head.copy()
+        headers["Accept"] = "application/wirelesscar.GuardianAlert-v1+json"
+        headers["Accept-Encoding"] = "gzip,deflate"
+        return self.get('gm/alerts', headers)
+
+    def get_guardian_mode_status(self):
+        """Get Guardian Mode Status"""
+        headers = self.connection.head.copy()
+        headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.GuardianStatus-v1+json"
+        return self.get('gm/status', headers)
+
+    def get_guardian_mode_settings_user(self):
+        """Get Guardian Mode User Settings"""
+        headers = self.connection.head.copy()
+        headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.GuardianUserSettings-v1+json"
+        return self.get('gm/settings/user', headers)
+
+    def get_guardian_mode_settings_system(self):
+        """Get Guardian Mode System Settings"""
+        headers = self.connection.head.copy()
+        headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.GuardianSystemSettings-v1+json"
+        return self.get('gm/settings/system', headers)
+
     def get_trip(self, trip_id):
         """Get info on a specific trip"""
         return self.get('trips/%s/route?pageSize=1000&page=0' % trip_id, self.connection.head)
@@ -574,6 +606,9 @@ class Vehicle(dict):
     def authenticate_prov(self, pin):
         """Authenticate to PROV service"""
         return self._authenticate_pin_protected_service(pin, "PROV")
+
+    def authenticate_gm(self, pin):
+        return self._authenticate_pin_protected_service(pin, "GM")
 
     def _authenticate_pin_protected_service(self, pin, service_name):
         """Authenticate to specified service with the provided PIN"""
