@@ -520,6 +520,10 @@ class Vehicle(dict):
         """Enable service mode. Will disable at the specified time (epoch millis)"""
         return self._prov_command(pin, expiration_time, "protectionStrategy_serviceMode")
 
+    def enable_guardian_mode(self, pin, expiration_time):
+        """Enable Guardian Mode until the specified time (epoch millis)"""
+        return self._gm_command(pin, expiration_time, "ACTIVE")
+
     def enable_transport_mode(self, pin, expiration_time):
         """Enable transport mode. Will be disabled at the specified time (epoch millis)"""
         return self._prov_command(pin, expiration_time, "protectionStrategy_transportMode")
@@ -543,6 +547,16 @@ class Vehicle(dict):
         prov_data["endTime"] = expiration_time
 
         return self.post("prov", headers, prov_data)
+
+    def _gm_command(self, pin, expiration_time, status):
+        """Send GM toggle command"""
+        headers = self.connection.head.copy()
+        headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.GuardianAlarmList-v1+json"
+        gm_data = self.authenticate_gm(pin)
+        gm_data["endTime"] = expiration_time
+        gm_data["status"] = status
+
+        return self.post("gm/alarms", headers, gm_data)
 
     def _authenticate_vhs(self):
         """Authenticate to vhs and get token"""
