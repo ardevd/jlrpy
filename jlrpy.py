@@ -119,6 +119,7 @@ class Connection(object):
         self.head = {
             "Authorization": "Bearer %s" % access_token,
             "X-Device-Id": self.device_id,
+            "x-telematicsprogramtype", "jlrpy",
             "Content-Type": "application/json"}
 
     def __authenticate(self, data=None):
