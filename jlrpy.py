@@ -201,12 +201,16 @@ class Vehicle(dict):
         self.connection = connection
         self.vin = data['vin']
 
+    def get_contact_info(self, mcc):
+        """ Get contact info for the specified mobile country code"""
+        headers = self.connection.head.copy()
+        return self.get('contactinfo/%s' % mcc, headers)
+
     def get_attributes(self):
         """Get vehicle attributes"""
         headers = self.connection.head.copy()
         headers["Accept"] = "application/vnd.ngtp.org.VehicleAttributes-v3+json"
-        result = self.get('attributes', headers)
-        return result
+        return self.get('attributes', headers)
 
     def get_status(self, key=None):
         """Get vehicle status"""
