@@ -215,7 +215,7 @@ class Vehicle(dict):
     def get_status(self, key=None):
         """Get vehicle status"""
         headers = self.connection.head.copy()
-        headers["Accept"] = "application/vnd.ngtp.org.if9.healthstatus-v2+json"
+        headers["Accept"] = "application/vnd.ngtp.org.if9.healthstatus-v3+json"
         result = self.get('status', headers)
 
         if key:
