@@ -407,7 +407,6 @@ class Vehicle(dict):
 
         ecc_data = self.authenticate_ecc()
         ecc_data['serviceParameters'] = service_parameters
-
         return self.post("preconditioning", headers, ecc_data)
 
     def charging_stop(self):
@@ -568,7 +567,7 @@ class Vehicle(dict):
         return self._authenticate_empty_pin_protected_service("VHS")
 
     def _authenticate_empty_pin_protected_service(self, service_name):    
-        return self._authenticate_pin_protected_service("", service_name)
+        return self._authenticate_service("", service_name)
 
     def authenticate_hblf(self):
         """Authenticate to hblf"""
@@ -588,36 +587,36 @@ class Vehicle(dict):
 
     def _authenticate_vin_protected_service(self, service_name):
         """Authenticate to specified service and return associated token"""
-        return self._authenticate_pin_protected_service(self.vin[-4:], service_name)
+        return self._authenticate_service(self.vin[-4:], service_name)
 
     def authenticate_rdl(self, pin):
         """Authenticate to rdl"""
-        return self._authenticate_pin_protected_service(pin, "RDL")
+        return self._authenticate_service(pin, "RDL")
 
     def authenticate_rdu(self, pin):
         """Authenticate to rdu"""
-        return self._authenticate_pin_protected_service(pin, "RDU")
+        return self._authenticate_service(pin, "RDU")
 
     def authenticate_aloff(self, pin):
         """Authenticate to aloff"""
-        return self._authenticate_pin_protected_service(pin, "ALOFF")
+        return self._authenticate_service(pin, "ALOFF")
 
     def authenticate_reon(self, pin):
         """Authenticate to reon"""
-        return self._authenticate_pin_protected_service(pin, "REON")
+        return self._authenticate_service(pin, "REON")
 
     def authenticate_reoff(self, pin):
         """Authenticate to reoff"""
-        return self._authenticate_pin_protected_service(pin, "REOFF")
+        return self._authenticate_service(pin, "REOFF")
 
     def authenticate_prov(self, pin):
         """Authenticate to PROV service"""
-        return self._authenticate_pin_protected_service(pin, "PROV")
+        return self._authenticate_service(pin, "PROV")
 
     def authenticate_gm(self, pin):
-        return self._authenticate_pin_protected_service(pin, "GM")
+        return self._authenticate_service(pin, "GM")
 
-    def _authenticate_pin_protected_service(self, pin, service_name):
+    def _authenticate_service(self, pin, service_name):
         """Authenticate to specified service with the provided PIN"""
         data = {
             "serviceName": "%s" % service_name,
