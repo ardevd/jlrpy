@@ -567,14 +567,8 @@ class Vehicle(dict):
         """Authenticate to vhs and get token"""
         return self._authenticate_empty_pin_protected_service("VHS")
 
-    def _authenticate_empty_pin_protected_service(self, service_name):
-        data = {
-            "serviceName": service_name,
-            "pin": ""}
-        headers = self.connection.head.copy()
-        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.AuthenticateRequest-v2+json; charset=utf-8"
-
-        return self.post("users/%s/authenticate" % self.connection.user_id, headers, data)
+    def _authenticate_empty_pin_protected_service(self, service_name):    
+        return self._authenticate_pin_protected_service("", service_name)
 
     def authenticate_hblf(self):
         """Authenticate to hblf"""
@@ -594,13 +588,7 @@ class Vehicle(dict):
 
     def _authenticate_vin_protected_service(self, service_name):
         """Authenticate to specified service and return associated token"""
-        data = {
-            "serviceName": "%s" % service_name,
-            "pin": "%s" % self.vin[-4:]}
-        headers = self.connection.head.copy()
-        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.AuthenticateRequest-v2+json; charset=utf-8"
-
-        return self.post("users/%s/authenticate" % self.connection.user_id, headers, data)
+        return self._authenticate_pin_protected_service(self.vin[-4:], service_name)
 
     def authenticate_rdl(self, pin):
         """Authenticate to rdl"""
