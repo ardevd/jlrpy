@@ -219,7 +219,10 @@ class Vehicle(dict):
         result = self.get('status?includeInactive=true', headers)
 
         if key:
-            return {d['key']: d['value'] for d in result['vehicleStatus']}[key]
+            coreStatusList = result['vehicleStatus']['coreStatus']
+            evStatusList = result['vehicleStatus']['evStatus']
+            coreStatusList = coreStatusList + evStatusList
+            return {d['key']: d['value'] for d in coreStatusList}[key]
 
         return result
 
@@ -566,7 +569,7 @@ class Vehicle(dict):
         """Authenticate to vhs and get token"""
         return self._authenticate_empty_pin_protected_service("VHS")
 
-    def _authenticate_empty_pin_protected_service(self, service_name):    
+    def _authenticate_empty_pin_protected_service(self, service_name):
         return self._authenticate_service("", service_name)
 
     def authenticate_hblf(self):
