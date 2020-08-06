@@ -86,7 +86,10 @@ def check_soc():
 
     # getting health status forces a status update
     healthstatus = v.get_health_status()
-    status = { d['key'] : d['value'] for d in v.get_status()['vehicleStatus'] }
+    # get the vehicle status 
+    vehicleStatus = v.get_status()['vehicleStatus']
+    #we have a list of keys and values - we need to convert to a dict to make it more usable
+    status = { d['key'] : d['value'] for d in vehicleStatus }
 
     current_soc = int(status['EV_STATE_OF_CHARGE'])
     charging_status = status['EV_CHARGING_STATUS']
