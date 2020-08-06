@@ -224,10 +224,6 @@ class Vehicle(dict):
             coreStatusList = coreStatusList + evStatusList
             return {d['key']: d['value'] for d in coreStatusList}[key]
 
-        coreStatusList = result['vehicleStatus']['coreStatus']
-        evStatusList = result['vehicleStatus']['evStatus']
-        result['vehicleStatus'] = coreStatusList + evStatusList
-    
         return result
 
     def get_health_status(self):
