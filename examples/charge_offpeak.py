@@ -3,7 +3,7 @@
 
 This script will check the charging level once every minute
 if the vehicle is at home (100 meters or less from the location
-specified in the config file) and if the current battery level 
+specified in the config file) and if the current battery level
 meets or exceeds the specified maximum value, the charging will
 stop if the vehicle is currently charging.
 
@@ -86,7 +86,8 @@ def check_soc():
 
     # getting health status forces a status update
     healthstatus = v.get_health_status()
-    status = { d['key'] : d['value'] for d in v.get_status()['vehicleStatus'] }
+    vehicleStatus = v.get_status()['vehicleStatus']
+    status = { d['key'] : d['value'] for d in vehicleStatus['evStatus'] }
 
     current_soc = int(status['EV_STATE_OF_CHARGE'])
     charging_status = status['EV_CHARGING_STATUS']
@@ -112,7 +113,7 @@ def check_soc():
         logger.info("car is not plugged in")
 
 config = configparser.ConfigParser()
-configfile = os.environ['HOME']+"/.jlrpy.ini"
+configfile = (os.path.expanduser('~')+"/.jlrpy.ini") #make platform independent
 config.read(configfile)
 username = config['jlrpy']['email']
 password = config['jlrpy']['password']
