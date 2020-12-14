@@ -30,7 +30,7 @@ v = c.vehicles[0]
 c = jlrpy.Connection(email='my@email.com', refresh_token='124c3f21-42ds-2e4d-86f8-221v32392a1d')
 ```
 
-`Connection.vehicles` will list all vehicles assosiated with your account.
+`Connection.vehicles` will list all vehicles associated with your account.
 
 ```python
 # Get user information
