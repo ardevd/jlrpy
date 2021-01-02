@@ -90,7 +90,7 @@ v.add_departure_timer(10, 2019, 1, 30, 20, 30)
 # Delete a single departure timer index.
 v.delete_departure_timer(10)
 # Schedule repeated departure timer.
-schedule = {"friday":false,"monday":true,"saturday":false,"sunday":false,"thursday":false,"tuesday":true,"wednesday":true}
+schedule = {"friday":False,"monday":True,"saturday":False,"sunday":False,"thursday":False,"tuesday":True,"wednesday":True}
 v.add_repeated_departure_timer(10, 20, 30, schedule)
 # Set wakeup timer (epoch millis)
 v.set_wakeup_time(1547845200000)
