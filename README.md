@@ -2,6 +2,8 @@
 
 [![Join the chat at https://gitter.im/jlrpy/community](https://badges.gitter.im/jlrpy/community.svg)](https://gitter.im/jlrpy/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+[![Support the project](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/ardevd/donate)
+
 Python 3 library for interacting with the JLR Remote car API.
 
 ## Documentation
