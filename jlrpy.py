@@ -291,9 +291,9 @@ class Vehicle(dict):
         headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.GuardianSystemSettings-v1+json"
         return self.get('gm/settings/system', headers)
 
-    def get_trip(self, trip_id):
+    def get_trip(self, trip_id, section=1):
         """Get info on a specific trip"""
-        return self.get('trips/%s/route?pageSize=1000&page=0' % trip_id, self.connection.head)
+        return self.get('trips/%s/route?pageSize=1000&page=%d' % (trip_id, section), self.connection.head)
 
     def get_position(self):
         """Get current vehicle position"""
