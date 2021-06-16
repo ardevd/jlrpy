@@ -12,12 +12,6 @@ import sys
 import logging
 
 logger = logging.getLogger('jply')
-logger.setLevel(logging.INFO)
-
-ch = logging.StreamHandler(sys.stdout)
-ch.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
-logger.addHandler(ch)
-logger.propagate = False
 
 IFAS_BASE_URL = "https://ifas.prod-row.jlrmotor.com/ifas/jlr"
 IFOP_BASE_ULR = "https://ifop.prod-row.jlrmotor.com/ifop/jlr"
