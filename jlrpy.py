@@ -24,7 +24,7 @@ IFOP_BASE_ULR = "https://ifop.prod-row.jlrmotor.com/ifop/jlr"
 IF9_BASE_URL = "https://if9.prod-row.jlrmotor.com/if9/jlr"
 
 
-class Connection(object):
+class Connection:
     """Connection to the JLR Remote Car API"""
 
     def __init__(self,
