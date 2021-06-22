@@ -11,7 +11,7 @@ import uuid
 import sys
 import logging
 
-logger = logging.getLogger('jply')
+logger = logging.getLogger('jlrpy')
 
 IFAS_BASE_URL = "https://ifas.prod-row.jlrmotor.com/ifas/jlr"
 IFOP_BASE_ULR = "https://ifop.prod-row.jlrmotor.com/ifop/jlr"
