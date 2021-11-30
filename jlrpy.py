@@ -25,7 +25,8 @@ class Connection:
                  email='',
                  password='',
                  device_id='',
-                 refresh_token=''):
+                 refresh_token='',
+                 use_china_servers=False):
         """Init the connection object
 
         The email address and password associated with your Jaguar InControl account is required.
@@ -33,6 +34,14 @@ class Connection:
         A refresh token can be supplied for authentication instead of a password
         """
         self.email = email
+
+        if use_china_servers:
+            global IFAS_BASE_URL
+            IFAS_BASE_URL = "https://ifas.prod-chn.jlrmotor.com/ifas/jlr"
+            global IFOP_BASE_ULR
+            IFOP_BASE_ULR = "https://ifop.prod-chn.jlrmotor.com/ifop/jlr"
+            global IF9_BASE_URL
+            IF9_BASE_URL = "https://ifoa.prod-chn.jlrmotor.com/if9/jlr"
 
         if device_id:
             self.device_id = device_id
