@@ -80,6 +80,8 @@ class Connection:
         if now > self.expiration:
             # Auth expired, reconnect
             self.connect()
+            if headers['Authorization']:
+                headers['Authorization'] = self.head['Authorization']
         return self.__open("%s/%s" % (url, command), headers=headers, data=data)
 
     def connect(self):
