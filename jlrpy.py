@@ -419,6 +419,12 @@ class Vehicle(dict):
         }
         self.post("settings", headers, service_parameters)
 
+    def get_waua_status(self):
+        """Get WAUA status."""
+        headers = self.connection.head.copy()
+        headers["Accept"] = "application/wirelesscar.WauaStatus-v1+json"
+        return self.get("waua/status", headers)
+
     def preconditioning_start(self, target_temp):
         """Start pre-conditioning for specified temperature (celsius)"""
         service_parameters = [
