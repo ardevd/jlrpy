@@ -106,7 +106,7 @@ class Connection:
         if headers['Authorization']:
             headers['Authorization'] = self.head['Authorization']
         return self._request(f"{url}/{command}", headers=headers, data=data, method="POST")
-    
+
     def delete(self, command, url, headers):
         """DELETE data from api"""
         self.validate_token()
@@ -695,8 +695,7 @@ class Vehicle(dict):
     def post(self, command, headers, data):
         """Utility command to post data to VHS"""
         return self.connection.post(command, f"{self.connection.base.IF9}/vehicles/{self.vin}", headers, data)
-    
+
     def delete(self, command, headers):
         """Utility command to delete active service entry"""
         return self.connection.delete(command, f"{self.connection.base.IF9}/vehicles/{self.vin}", headers)
-
