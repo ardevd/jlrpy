@@ -580,6 +580,10 @@ class Vehicle(dict):
         """Enable transport mode. Will be disabled at the specified time (epoch millis)"""
         return self._prov_command(pin, expiration_time, "protectionStrategy_transportMode")
 
+    def disable_transport_mode(self, pin):
+        """Disable transport mode"""
+        return self._prov_command(pin, None, "protectionStrategy_transportMode")
+
     def enable_privacy_mode(self, pin):
         """Enable privacy mode. Will disable journey logging"""
         return self._prov_command(pin, None, "privacySwitch_on")
