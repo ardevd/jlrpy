@@ -563,6 +563,11 @@ class Vehicle(dict):
         """Enable service mode. Will disable at the specified time (epoch millis)"""
         return self._prov_command(pin, expiration_time, "protectionStrategy_serviceMode")
 
+    def disable_service_mode(self, pin):
+        """Disable service mode."""
+        exp = int(time.time() * 1000)
+        return self._prov_command(pin, exp, "protectionStrategy_serviceMode")
+
     def enable_guardian_mode(self, pin, expiration_time):
         """Enable Guardian Mode until the specified time (epoch millis)"""
         return self._gm_command(pin, expiration_time, "ACTIVATE")
