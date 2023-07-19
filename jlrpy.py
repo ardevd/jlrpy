@@ -106,6 +106,15 @@ class Connection:
         if headers['Authorization']:
             headers['Authorization'] = self.head['Authorization']
         return self._request(f"{url}/{command}", headers=headers, data=data, method="POST")
+    
+    def delete(self, command, url, headers):
+        """DELETE data from api"""
+        self.validate_token()
+        if headers['Authorization']:
+            headers['Authorization'] = self.head['Authorization']
+        if headers["Accept"]:
+            del headers["Accept"]
+        return self._request(url=f"{url}/{command}", headers=headers, method="DELETE")
 
     def connect(self):
         """Connect to JLR API"""
@@ -556,7 +565,11 @@ class Vehicle(dict):
 
     def enable_guardian_mode(self, pin, expiration_time):
         """Enable Guardian Mode until the specified time (epoch millis)"""
-        return self._gm_command(pin, expiration_time, "ACTIVE")
+        return self._gm_command(pin, expiration_time, "ACTIVATE")
+
+    def disable_guardian_mode(self, pin):
+        """Disable Guardian Mode"""
+        return self._gm_command(pin, 0, "DEACTIVATE")
 
     def enable_transport_mode(self, pin, expiration_time):
         """Enable transport mode. Will be disabled at the specified time (epoch millis)"""
@@ -582,15 +595,18 @@ class Vehicle(dict):
 
         return self.post("prov", headers, prov_data)
 
-    def _gm_command(self, pin, expiration_time, status):
+    def _gm_command(self, pin, expiration_time, action):
         """Send GM toggle command"""
         headers = self.connection.head.copy()
         headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.GuardianAlarmList-v1+json"
         gm_data = self.authenticate_gm(pin)
-        gm_data["endTime"] = expiration_time
-        gm_data["status"] = status
-
-        return self.post("gm/alarms", headers, gm_data)
+        if action == "ACTIVATE":
+            gm_data["endTime"] = expiration_time
+            gm_data["status"] = "ACTIVE"
+            return self.post("gm/alarms", headers, gm_data)
+        if action == "DEACTIVATE":
+            headers["X-servicetoken"] = gm_data.get("token")
+            return self.delete("gm/alarms/INSTANT", headers)
 
     def _authenticate_vhs(self):
         """Authenticate to vhs and get token"""
@@ -664,3 +680,8 @@ class Vehicle(dict):
     def post(self, command, headers, data):
         """Utility command to post data to VHS"""
         return self.connection.post(command, f"{self.connection.base.IF9}/vehicles/{self.vin}", headers, data)
+    
+    def delete(self, command, headers):
+        """Utility command to delete active service entry"""
+        return self.connection.delete(command, f"{self.connection.base.IF9}/vehicles/{self.vin}", headers)
+
