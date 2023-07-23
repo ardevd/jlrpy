@@ -1,7 +1,7 @@
 import setuptools
 
 
-with open("README.md", "r") as fh:
+with open("README.md", "r", encoding='UTF-8') as fh:
     long_description = fh.read()
 
 setuptools.setup(
@@ -14,7 +14,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/ardevd/jlrpy",
     py_modules=['jlrpy'],
-    install_requires=[],
+    install_requires=['requests>=2.26.0'],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
