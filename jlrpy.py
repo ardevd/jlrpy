@@ -4,7 +4,6 @@ https://github.com/ardevd/jlrpy
 
 
 import calendar
-import enum
 import json
 import logging
 import time
@@ -17,14 +16,14 @@ from requests.exceptions import HTTPError
 logger = logging.getLogger('jlrpy')
 
 
-class BaseURLs(enum.Enum):
+class BaseURLs:
     """Rest Of World Base URLs"""
     IFAS = "https://ifas.prod-row.jlrmotor.com/ifas/jlr"
     IFOP = "https://ifop.prod-row.jlrmotor.com/ifop/jlr"
     IF9 = "https://if9.prod-row.jlrmotor.com/if9/jlr"
 
 
-class ChinaBaseURLs(enum.Enum):
+class ChinaBaseURLs:
     """China Base URLs"""
     IFAS = "https://ifas.prod-chn.jlrmotor.com/ifas/jlr"
     IFOP = "https://ifop.prod-chn.jlrmotor.com/ifop/jlr"
@@ -208,6 +207,9 @@ class Connection:
 
     def get_user_info(self):
         """Get user information"""
+        headers = self.head.copy()
+        headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.User-v3+json"
+        headers["Content-Type"] = "application/json"
         return self.get(self.user_id, f"{self.base.IF9}/users", self.head)
 
     def update_user_info(self, user_info_data):
