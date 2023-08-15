@@ -220,7 +220,9 @@ class Connection:
 
     def reverse_geocode(self, lat, lon):
         """Get geocode information"""
-        return self.get("en", f"{self.base.IF9}/geocode/reverse/{lat}/{lon}", self.head)
+        headers = self.head.copy()
+        headers["Accept"] = "application/json"
+        return self.get("en", f"{self.base.IF9}/geocode/reverse/{lat}/{lon}", headers)
 
 
 class Vehicle(dict):
