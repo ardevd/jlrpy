@@ -1,6 +1,6 @@
 # jlrpy
 
-[![Tip me - LNURL](https://img.shields.io/badge/Tip_me-LNURL-dc9e57?logo=lightning&logoColor=dc9e57)](lightning:LNURL1DP68GURN8GHJ7MRW9E6XJURN9UH8WETVDSKKKMN0WAHZ7MRWW4EXCUP0X9URJE34XDSNJCMP8PJRWENPVENXX2XCG96)
+[![Tip me - LNURL](https://img.shields.io/badge/Tip_me-LNURL-dc9e57?logo=lightning&logoColor=dc9e57)](https://tipybit.com/ardevd)
 
 [![Join the chat at https://gitter.im/jlrpy/community](https://badges.gitter.im/jlrpy/community.svg)](https://gitter.im/jlrpy/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
