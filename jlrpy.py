@@ -362,7 +362,7 @@ class Vehicle(dict):
     def lock(self, pin):
         """Lock vehicle. Requires personal PIN for authentication"""
         headers = self.connection.head.copy()
-        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v2+json"
+        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json"
         rdl_data = self.authenticate_rdl(pin)
 
         return self.post("lock", headers, rdl_data)
@@ -370,7 +370,7 @@ class Vehicle(dict):
     def unlock(self, pin):
         """Unlock vehicle. Requires personal PIN for authentication"""
         headers = self.connection.head.copy()
-        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v2+json"
+        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json"
         rdu_data = self.authenticate_rdu(pin)
 
         return self.post("unlock", headers, rdu_data)
