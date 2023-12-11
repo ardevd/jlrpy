@@ -131,9 +131,7 @@ class Connection:
         logger.info("2/2 user logged in, user id retrieved")
 
     def _request(self, url, headers=None, data=None, method="GET"):
-        print(f"URL: {url} \nHEADERS: {headers} \nDATA: {data} \nMETHOD: {method}")
         ret = requests.request(method=method, url=url, headers=headers, json=data, timeout=TIMEOUT)
-        print(ret.text)
         if ret.text:
             try:
                 return json.loads(ret.text)
