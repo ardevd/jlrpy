@@ -152,6 +152,8 @@ class Connection:
             "Authorization": f"Bearer {access_token}",
             "X-Device-Id": self.device_id,
             "x-telematicsprogramtype": "jlrpy",
+            "x-App-Id": "ICR_JAGUAR",
+            "x-App-Secret": "018dd168-6271-707f-9fd4-aed2bf76905e",
             "Content-Type": "application/json"}
 
     def _authenticate(self, data=None):
