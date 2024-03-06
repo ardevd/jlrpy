@@ -1,5 +1,9 @@
 # jlrpy
 
+# NOTE
+
+As of March 1st 2024, JLR have restricted API access and jlrpy and WattCat are therefore currently not functional. Investigation is ongoing.
+
 [![Tip me - LNURL](https://img.shields.io/badge/Tip_me-LNURL-dc9e57?logo=lightning&logoColor=dc9e57)](https://tipybit.com/ardevd)
 
 [![Join the chat at https://gitter.im/jlrpy/community](https://badges.gitter.im/jlrpy/community.svg)](https://gitter.im/jlrpy/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
