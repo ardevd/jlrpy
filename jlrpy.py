@@ -287,7 +287,9 @@ class Vehicle(dict):
 
     def get_subscription_packages(self):
         """Get vehicle status"""
-        result = self.get('subscriptionpackages', self.connection.head)
+        headers = self.connection.head.copy()
+        headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.SubscriptionPackages-v2+json"
+        result = self.get('subscriptionpackages', headers)
         return result
 
     def get_trips(self, count=1000):
