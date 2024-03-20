@@ -210,7 +210,7 @@ class Connection:
         headers = self.head.copy()
         headers["Accept"] = "application/vnd.wirelesscar.ngtp.if9.User-v3+json"
         headers["Content-Type"] = "application/json"
-        return self.get(self.user_id, f"{self.base.IF9}/users", self.head)
+        return self.get("", f"{self.base.IF9}/users?loginName={self.email}", self.head)
 
     def update_user_info(self, user_info_data):
         """Update user information"""
