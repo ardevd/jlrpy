@@ -158,11 +158,11 @@ class Connection:
 
     def _authenticate(self, data=None):
         """Raw urlopen command to the auth url"""
-        url = f"{self.base.IFAS}/tokens"
+        url = f"{self.base.IFAS}/tokens/tokensSSO"
         auth_headers = {
             "Authorization": "Basic YXM6YXNwYXNz",
             "Content-Type": "application/json",
-            "X-Device-Id": self.device_id}
+            "user-agent": "jlrpy"}
 
         return self._request(url, auth_headers, data, "POST")
 
