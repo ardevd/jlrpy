@@ -292,11 +292,25 @@ class Vehicle(dict):
         result = self.get('subscriptionpackages', headers)
         return result
 
-    def get_trips(self, count=1000):
-        """Get the last 1000 trips associated with vehicle"""
+    def get_trips(self, count=1000, start=None, stop=None):
+        """Get the last 1000 trips associated with vehicle. Start/Stop strings in ISO 8601 format."""
         headers = self.connection.head.copy()
         headers["Accept"] = "application/vnd.ngtp.org.triplist-v2+json"
-        return self.get(f"trips?count={count}", headers)
+        path = 'trips?'
+        if start != None:
+            s = datetime.fromisoformat(start).isoformat(timespec='minutes')
+            utc_tz = datetime.fromisoformat(s[:16]+'+0000').tzinfo
+            s = datetime.fromisoformat(start).astimezone(utc_tz).isoformat(timespec='seconds')
+            s = s[:19]+'+0000'
+            path += 'startDate='+requests.utils.quote(s)+'&'
+        if stop != None:
+            s = datetime.fromisoformat(stop).isoformat(timespec='minutes')
+            utc_tz = datetime.fromisoformat(s[:16]+'+0000').tzinfo
+            s = datetime.fromisoformat(stop).astimezone(utc_tz).isoformat(timespec='seconds')
+            s = s[:19]+'+0000'
+            path += 'stopDate='+requests.utils.quote(s)+'&'
+        path += f"count={count}"
+        return self.get(path, headers)
 
     def get_guardian_mode_alarms(self):
         """Get Guardian Mode Alarms"""
