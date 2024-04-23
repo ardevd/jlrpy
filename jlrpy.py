@@ -414,7 +414,7 @@ class Vehicle(dict):
     def remote_engine_start(self, pin, target_value):
         """Start Remote Engine preconditioning"""
         headers = self.connection.head.copy()
-        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v2+json"
+        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json"
         self.set_rcc_target_value(pin, target_value)
         reon_data = self.authenticate_reon(pin)
 
@@ -423,7 +423,7 @@ class Vehicle(dict):
     def remote_engine_stop(self, pin):
         """Stop Remote Engine preconditioning"""
         headers = self.connection.head.copy()
-        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v2+json"
+        headers["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json"
         reoff_data = self.authenticate_reoff(pin)
 
         return self.post("engineOff", headers, reoff_data)
