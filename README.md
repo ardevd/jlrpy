@@ -1,10 +1,9 @@
 # jlrpy
 
-[![Tip me - LNURL](https://img.shields.io/badge/Tip_me-LNURL-dc9e57?logo=lightning&logoColor=dc9e57)](https://tipybit.com/ardevd)
-
-[![Join the chat at https://gitter.im/jlrpy/community](https://badges.gitter.im/jlrpy/community.svg)](https://gitter.im/jlrpy/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 Python 3 library for interacting with the JLR Remote car API.
+
+## Disclaimer
+Unfortunately, JLR has put costly and serious efforts into blocking third party API access. jlrpy is effectively not functional at this time and it is unlikely to change in the forseeable future.
 
 ## Documentation
 The associated API documentation for the JLR InControl API is a good read for anyone wanting to make use of this project. It's currently available [here](https://documenter.getpostman.com/view/6250319/RznBMzqo)
